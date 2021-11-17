@@ -3,6 +3,9 @@ int framerate = 60;
 final SceneManager sceneManager = new SceneManager();
 final InventoryManager inventoryManager = new InventoryManager();
 
+public float xMid;
+public float yMid;
+
 void settings()
 {
   fullScreen();
@@ -11,14 +14,15 @@ void settings()
 
 void setup()
 {
-  float xMid = width / 2;
-  float yMid = height / 2;
+  xMid = width / 2;
+  yMid = height / 2;
   frameRate(framerate);
 
   Collectable key = new Collectable("key", "key.png");
+  Collectable key2 = new Collectable("key2", "key.png");
   MoveToSceneObject object7 = new MoveToSceneObject("goToScene04_scene01", 206, 461, 50, 50, "arrowUp.png", "scene04");
   
-  Scene menu = new Scene("menu", "menu.jpg");
+  Scene menu = new Scene("menu", "menu.png");
   ButtonObject startButton = new ButtonObject("startButton", 50, (int)(yMid * 1.5), 200, 64, "Start", "scene01");
   ButtonObject optionsButton = new ButtonObject("optionsButton", 50, (int)(yMid * 1.65), 200, 64, "Options", "options");
   ButtonObject exitButton = new ButtonObject("exitButton", 50, (int)(yMid * 1.8), 200, 64, "Exit", "exit");
@@ -26,7 +30,7 @@ void setup()
   menu.addGameObject(optionsButton);
   menu.addGameObject(exitButton);
 
-  Scene options = new Scene("options", "menu.jpg");
+  Scene options = new Scene("options", "menu.png");
   ButtonObject backButton = new ButtonObject("backButton", 50, (int)(yMid * 1.8), 200, 64, "Back", "menu");
   options.addGameObject(backButton);
 
@@ -54,8 +58,10 @@ void setup()
   Scene scene03 = new Scene("scene03", "back04.png");
   MoveToSceneObject object5 = new MoveToSceneObject("goBack_scene03", 203, 673, 50, 50, "arrowDown.png", true);
   scene03.addGameObject(object5);
-  CollectableObject object6 = new CollectableObject("apple_scene03", 325, 366, 123, 101, key);
+  CollectableObject object6 = new CollectableObject("apple_scene03", width/4, height/5, width/20, width/20, true, key);
+  CollectableObject object62 = new CollectableObject("apple_scene03_2", width/5, height/5, width/20, width/20, true, key2);
   scene03.addGameObject(object6);
+  scene03.addGameObject(object62);
   
   Scene scene04 = new Scene("scene04", "back03.png");
   TextObject endGame = new TextObject("smallText_scene04", 430, 590, 50, 50, "medal1.png", "Congratulations. You finished the game!");
@@ -85,6 +91,7 @@ void draw()
   sceneManager.getCurrentScene().draw(width, height);
   sceneManager.getCurrentScene().updateScene();
   inventoryManager.clearMarkedForDeathCollectables();
+  inventoryManager.draw();
 }
 
 void mouseMoved() {

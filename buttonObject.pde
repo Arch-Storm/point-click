@@ -11,13 +11,13 @@ class ButtonObject extends GameObject {
         this.text = text;
         this.nextSceneIdentifier = nextSceneIdentifier;
         this.moveBack = false;
-        calculateTextArea(); //Automatically calculates the area necessary to display the entire text.
+        calculateTextArea(); // Automatically calculates the area necessary to display the entire text.
     }
 
     @Override
     public void draw() {
         super.draw();
-        fill(255, 255, 255, 64);
+        fill(0, 0, 0, 255);
         rect(this.x, this.y, width/10, textHeight, 8);
         fill(255);
         textSize(width / 40);

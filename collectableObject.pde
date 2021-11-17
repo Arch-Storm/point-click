@@ -2,15 +2,17 @@ class CollectableObject extends GameObject {
   private Collectable collectable;
   private GameObject replaceWith;
   private boolean willReplaceByAnotherGameObject;
+  private boolean isDraggable;
   
   public CollectableObject(String identifier, int x, int y, int owidth, 
-                           int oheight, Collectable collectable) {
-    this(identifier, x, y, owidth, oheight, collectable, null);
+                           int oheight, boolean isDraggable, Collectable collectable) {
+    this(identifier, x, y, owidth, oheight, isDraggable, collectable, null);
   }
   
   public CollectableObject(String identifier, int x, int y, int owidth, 
-                           int oheight, Collectable collectable, GameObject replaceWith) {
+                           int oheight, boolean isDraggable, Collectable collectable, GameObject replaceWith) {
     super(identifier, x, y, owidth, oheight, collectable.getGameObjectImageFile());
+    this.isDraggable = isDraggable;
     this.collectable = collectable;
     if(replaceWith != null) {
       this.replaceWith = replaceWith;

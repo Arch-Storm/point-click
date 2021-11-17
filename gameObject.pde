@@ -4,6 +4,7 @@ class GameObject {
   protected int owidth;
   protected int oheight;
   private String identifier;
+  private boolean isDraggable;
   private boolean hasImage;
   private boolean hasHoverImage;
   private PImage gameObjectImage;
