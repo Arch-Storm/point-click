@@ -1,4 +1,5 @@
 int framerate = 60;
+boolean debugSolvedPuzzles = false;
 
 final SceneManager sceneManager = new SceneManager();
 final InventoryManager inventoryManager = new InventoryManager();
@@ -10,73 +11,129 @@ void settings()
 
 void setup()
 {
+
+  //sets screensize & framerate
   float xMid = width / 2;
   float yMid = height / 2;
   frameRate(framerate);
-
-  Collectable key = new Collectable("key", "key.png");
-  MoveToSceneObject object7 = new MoveToSceneObject("goToScene04_scene01", 206, 461, 50, 50, "arrowUp.png", "scene04");
   
+  //main menu
   Scene menu = new Scene("menu", "menu.jpg");
-  ButtonObject startButton = new ButtonObject("startButton", 50, (int)(yMid * 1.6), 200, 64, "Start", "scene01");
+  ButtonObject startButton = new ButtonObject("startButton", 50, (int)(yMid * 1.6), 200, 64, "Start", "hallway01");
   ButtonObject optionsButton = new ButtonObject("optionsButton", 50, (int)(yMid * 1.6 + 85), 200, 64, "Options", "options");
   ButtonObject exitButton = new ButtonObject("exitButton", 50, (int)(yMid * 1.6 + 170), 200, 64, "Exit", "exit");
   menu.addGameObject(startButton);
   menu.addGameObject(optionsButton);
   menu.addGameObject(exitButton);
-
+  
+  //options
   Scene options = new Scene("options", "menu.jpg");
   ButtonObject backButton = new ButtonObject("backButton", 50, (int)(yMid * 1.6 + 170), 200, 64, "Back", "menu");
   options.addGameObject(backButton);
+  
+  //init puzzle solved variables
+  boolean fingerScannerIsSolved = false;
+  boolean storageLockIsSolved = false;
+  boolean lockerLockIsSolved = false;
 
-  Scene scene01 = new Scene("scene01", "back01.png");
-  RequireObject loupe01 = new RequireObject("requiresApple_scene01", 206, 461, 50, 50, "zoom.png", "You need an Apple before getting here!", key, object7);
-  loupe01.setHoverImage("zoomIn.png");
-  scene01.addGameObject(loupe01);
-  TextObject loupe02 = new TextObject("smallText_scene01", 541, 445, 50, 50, "zoom.png", "This object has a text!");
-  loupe02.setHoverImage("zoomIn.png");
-  scene01.addGameObject(loupe02);
-  TextObject loupe03 = new TextObject("largeText_scene01", 46, 687, 50, 50, "zoom.png", "This object has a way longer text. It shows that the windows can be of varied size according to the text.");
-  loupe03.setHoverImage("zoomIn.png");
-  scene01.addGameObject(loupe03);
-  MoveToSceneObject object2 = new MoveToSceneObject("goToScene02_scene01", 708, 445, 50, 50, "arrowRight.png", "scene02");
-  scene01.addGameObject(object2);
-  MoveToSceneObject restaurantSceneMoveTo = new MoveToSceneObject("goToScene06_scene01", 388, 440, 50, 50, "arrowUp.png", "scene05");
-  scene01.addGameObject(restaurantSceneMoveTo);
+
+//Scenes & room navigation
+//storageRoom
+  Scene storageRoom = new Scene("storageRoom", "TEMP_storageRoom.png" );
+
+  //to hallway02 (back)
+  MoveToSceneObject storageTohallway02 = new MoveToSceneObject("storageRoom_hallway02", int(xMid), int(yMid) + 300, 100, 100, "arrowDown.png", true);
+  storageRoom.addGameObject(storageTohallway02);
+
+
+//barracksRoom
+  Scene barracksRoom = new Scene("barracksRoom", "TEMP_barracksRoom.png" );
+
+  //to hallway01 (back)
+  MoveToSceneObject barrackstohallway01 = new MoveToSceneObject("barracks_hallway01", int(xMid), int(yMid) + 300, 100, 100, "arrowDown.png", true);
+  barracksRoom.addGameObject(barrackstohallway01);
+
+//controlroom
+  Scene controlRoom = new Scene("controlRoom", "TEMP_controlRoom.png" );
+
+  //to hallway01 (back)
+  MoveToSceneObject controltohallway01 = new MoveToSceneObject("controlRoom_hallway01", int(xMid), int(yMid) + 300, 100, 100, "arrowDown.png", true);
+  controlRoom.addGameObject(controltohallway01);
+
+
+//hallway01
+  Scene hallway01 = new Scene("hallway01", "TEMP_hallway01.png" );
+
+  //to hallway02
+  MoveToSceneObject h1ToHallway02 = new MoveToSceneObject("hallway01_hallway02", int(xMid), 0, 100, 100, "arrowUp.png", "hallway02");
+  hallway01.addGameObject(h1ToHallway02);
+
+  //to barracksRoom
+  MoveToSceneObject h1tobarracksRoom = new MoveToSceneObject("hallway01_barracksRoom", int(xMid) - 300, int(yMid), 100, 100, "arrowLeft.png", "barracksRoom");
+    hallway01.addGameObject(h1tobarracksRoom);
+
+  //to Controlroom (needs check)
+  if(fingerScannerIsSolved || debugSolvedPuzzles){
+    MoveToSceneObject h1tocontrolRoom = new MoveToSceneObject("hallway01_controlRoom", int(xMid) + 300, int(yMid), 100, 100, "arrowRight.png", "controlRoom");
+    hallway01.addGameObject(h1tocontrolRoom);
+  }
+  else{
+    // finger scanner puzzle
+  }
   
-  Scene scene02 = new Scene("scene02", "back02.png");
-  MoveToSceneObject object3 = new MoveToSceneObject("goBack_scene02", 350, 700, 50, 50, "arrowDown.png", true);
-  scene02.addGameObject(object3);
-  MoveToSceneObject object4 = new MoveToSceneObject("goToScene03_scene02", 441, 494, 50, 50, "arrowUp.png", "scene03");
-  scene02.addGameObject(object4);
+
+//hallway02 
+  Scene hallway02 = new Scene("hallway02", "TEMP_hallway02.png");
+
+  //toHallway01
+  MoveToSceneObject h2ToHallway01 = new MoveToSceneObject("hallway02_hallway01", int(xMid), int(yMid) + 300, 100, 100, "arrowDown.png", "hallway01");
+  hallway02.addGameObject(h2ToHallway01);
+
+  //toStorageRoom
+  if(storageLockIsSolved || debugSolvedPuzzles){
+    MoveToSceneObject h2ToStorageRoom = new MoveToSceneObject("hallway02_StorageRoom", int(xMid) + 300, int(yMid), 100, 100, "arrowRight.png", "storageRoom");
+    hallway02.addGameObject(h2ToStorageRoom);
+  }
+  else{
+    // storage key puzzle 
+  }
   
-  Scene scene03 = new Scene("scene03", "back04.png");
-  MoveToSceneObject object5 = new MoveToSceneObject("goBack_scene03", 203, 673, 50, 50, "arrowDown.png", true);
-  scene03.addGameObject(object5);
-  CollectableObject object6 = new CollectableObject("apple_scene03", 325, 366, 123, 101, key);
-  scene03.addGameObject(object6);
+//closeups
+  //hallway02locker_keycodes
+    Scene lockerPuzzle = new Scene("lockerPuzzle", "TEMP_puzzleLocker.png");
+
+    //to hallway01 (back)
+    MoveToSceneObject lockerpuzzletohallway01 = new MoveToSceneObject("controlRoom_hallway01", int(xMid), int(yMid) + 300, 100, 100, "arrowDown.png", true);
+    lockerPuzzle.addGameObject(lockerpuzzletohallway01);
+
+    //locker puzzle code here
+
+    //if player has solved locker puzzle
+    if(!lockerLockIsSolved || !debugSolvedPuzzles){
+      MoveToSceneObject h2LockerPuzzle = new MoveToSceneObject("hallway02_lockerPuzzle", int(xMid) - 300, int(yMid), 100, 100, "zoom.png", "lockerPuzzle");
+      hallway02.addGameObject(h2LockerPuzzle);
+      h2LockerPuzzle.setHoverImage("zoomIn.png");
+    }
+  //hallway02Door_FingerScanner
+  //storageRoom_knife
+  //barracksRoom_Bed
+  //controlRoom_Documents
+  //controlRoom_Computer
   
-  Scene scene04 = new Scene("scene04", "back03.png");
-  TextObject endGame = new TextObject("smallText_scene04", 430, 590, 50, 50, "medal1.png", "Congratulations. You finished the game!");
-  scene04.addGameObject(endGame);
   
-  Scene scene05 = new Scene("scene05", "back05.png");
-  MoveToSceneObject object8 = new MoveToSceneObject("goBack_scene01", 203, 753, 50, 50, "arrowDown.png", true);
-  scene05.addGameObject(object8);
-  TextObject loupe04 = new TextObject("smallText_scene05", 120, 275, 50, 50, "zoom.png", "Have you checked the apples in that odd house to the right?");
-  loupe04.setHoverImage("zoomIn.png");
-  scene05.addGameObject(loupe04);
-  TextObject loupe05 = new TextObject("smallText_2_scene05", 480, 285, 50, 50, "zoom.png", "Hello! How are you doing?");
-  loupe05.setHoverImage("zoomIn.png");
-  scene05.addGameObject(loupe05);
+  /*   DEPRICATED (i slapped the sense into scenemanager)
   
+  //stuff to help scenemanager not have an aneurysm 
   sceneManager.addScene(menu);
   sceneManager.addScene(options);
-  sceneManager.addScene(scene01);
-  sceneManager.addScene(scene02);
-  sceneManager.addScene(scene03);
-  sceneManager.addScene(scene04);
-  sceneManager.addScene(scene05);
+  sceneManager.addScene(storageRoom);
+  sceneManager.addScene(barracksRoom);
+  sceneManager.addScene(controlRoom);
+  sceneManager.addScene(hallway01);
+  sceneManager.addScene(hallway02);
+  
+  sceneManager.addScene(lockerPuzzle);
+  */
 }
 
 void draw()

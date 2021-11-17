@@ -1,4 +1,9 @@
 class MoveToSceneObject extends GameObject {
+
+
+/*
+    BUG: if the curser is not moved between scenes the oldest moveToSceneObject is used.
+*/
   
   private String nextSceneIdentifier;
   private boolean moveBack;
