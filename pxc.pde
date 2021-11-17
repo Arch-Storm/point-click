@@ -70,13 +70,13 @@ void setup()
 
 
 //hallway01
+  Scene hallway01 = new Scene("hallway01", "TEMP_hallway01.png" );
+  
   //is this code still used?
   CollectableObject object6 = new CollectableObject("apple_scene03", width/4, height/5, width/20, width/20, true, key);
   CollectableObject object62 = new CollectableObject("apple_scene03_2", width/5, height/5, width/20, width/20, true, key2);
   hallway01.addGameObject(object6);
   hallway01.addGameObject(object62);
-
-  Scene hallway01 = new Scene("hallway01", "TEMP_hallway01.png" );
 
   //to hallway02
   MoveToSceneObject h1ToHallway02 = new MoveToSceneObject("hallway01_hallway02", int(xMid), 0, 100, 100, "arrowUp.png", "hallway02");
