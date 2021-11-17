@@ -4,31 +4,39 @@ boolean debugSolvedPuzzles = false;
 final SceneManager sceneManager = new SceneManager();
 final InventoryManager inventoryManager = new InventoryManager();
 
+public float xMid;
+public float yMid;
+
 void settings()
 {
   fullScreen();
+  //size(1920, 1080);
 }
 
 void setup()
 {
-
   //sets screensize & framerate
-  float xMid = width / 2;
-  float yMid = height / 2;
+  xMid = width / 2;
+  yMid = height / 2;
   frameRate(framerate);
+
   
-  //main menu
-  Scene menu = new Scene("menu", "menu.jpg");
-  ButtonObject startButton = new ButtonObject("startButton", 50, (int)(yMid * 1.6), 200, 64, "Start", "hallway01");
-  ButtonObject optionsButton = new ButtonObject("optionsButton", 50, (int)(yMid * 1.6 + 85), 200, 64, "Options", "options");
-  ButtonObject exitButton = new ButtonObject("exitButton", 50, (int)(yMid * 1.6 + 170), 200, 64, "Exit", "exit");
+  //main menu 
+  Scene menu = new Scene("menu", "menu.png");
+  ButtonObject startButton = new ButtonObject("startButton", 50, (int)(yMid * 1.5), 200, 64, "Start", "hallway01");
+  ButtonObject optionsButton = new ButtonObject("optionsButton", 50, (int)(yMid * 1.65), 200, 64, "Options", "options");
+  ButtonObject exitButton = new ButtonObject("exitButton", 50, (int)(yMid * 1.8), 200, 64, "Exit", "exit");
   menu.addGameObject(startButton);
   menu.addGameObject(optionsButton);
   menu.addGameObject(exitButton);
-  
+
   //options
-  Scene options = new Scene("options", "menu.jpg");
-  ButtonObject backButton = new ButtonObject("backButton", 50, (int)(yMid * 1.6 + 170), 200, 64, "Back", "menu");
+  Scene options = new Scene("options", "menu.png");
+  ButtonObject backButton = new ButtonObject("backButton", 50, (int)(yMid * 1.8), 200, 64, "Back", "menu");
+  
+  Collectable key = new Collectable("key", "key.png");
+  Collectable key2 = new Collectable("key2", "key.png");
+  MoveToSceneObject object7 = new MoveToSceneObject("goToScene04_scene01", 206, 461, 50, 50, "arrowUp.png", "scene04");
   options.addGameObject(backButton);
   
   //init puzzle solved variables
@@ -62,6 +70,12 @@ void setup()
 
 
 //hallway01
+  //is this code still used?
+  CollectableObject object6 = new CollectableObject("apple_scene03", width/4, height/5, width/20, width/20, true, key);
+  CollectableObject object62 = new CollectableObject("apple_scene03_2", width/5, height/5, width/20, width/20, true, key2);
+  hallway01.addGameObject(object6);
+  hallway01.addGameObject(object62);
+
   Scene hallway01 = new Scene("hallway01", "TEMP_hallway01.png" );
 
   //to hallway02
@@ -141,6 +155,7 @@ void draw()
   sceneManager.getCurrentScene().draw(width, height);
   sceneManager.getCurrentScene().updateScene();
   inventoryManager.clearMarkedForDeathCollectables();
+  inventoryManager.draw();
 }
 
 void mouseMoved() {

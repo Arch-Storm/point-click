@@ -11,16 +11,16 @@ class ButtonObject extends GameObject {
         this.text = text;
         this.nextSceneIdentifier = nextSceneIdentifier;
         this.moveBack = false;
-        calculateTextArea(); //Automatically calculates the area necessary to display the entire text.
+        calculateTextArea(); // Automatically calculates the area necessary to display the entire text.
     }
 
     @Override
     public void draw() {
         super.draw();
-        fill(255, 255, 255, 64);
-        rect(this.x, this.y, 200, textHeight, 8);
+        fill(0, 0, 0, 255);
+        rect(this.x, this.y, width/10, textHeight, 8);
         fill(255);
-        textSize(48);
+        textSize(width / 40);
         text(text, this.x + 15, this.y, textWidth, textHeight); 
     }
 
@@ -45,10 +45,9 @@ class ButtonObject extends GameObject {
 
     public void calculateTextArea() {
     textWidth = textWidth(text);
-    println(textWidth);
     float remaining = textWidth - 300;
-    textWidth = (textWidth > 300) ? 300 : textWidth * 4;
-    textHeight = 64;
+    textWidth = (textWidth > 300) ? 300 : textWidth * ceil(width/480.0f);
+    textHeight = (int)(width/40*1.5);
     while(remaining > 300)
     {
       textHeight += 30;
