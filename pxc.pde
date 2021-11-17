@@ -6,6 +6,7 @@ final InventoryManager inventoryManager = new InventoryManager();
 void settings()
 {
   fullScreen();
+  //size(1920, 1080);
 }
 
 void setup()
@@ -18,15 +19,15 @@ void setup()
   MoveToSceneObject object7 = new MoveToSceneObject("goToScene04_scene01", 206, 461, 50, 50, "arrowUp.png", "scene04");
   
   Scene menu = new Scene("menu", "menu.jpg");
-  ButtonObject startButton = new ButtonObject("startButton", 50, (int)(yMid * 1.6), 200, 64, "Start", "scene01");
-  ButtonObject optionsButton = new ButtonObject("optionsButton", 50, (int)(yMid * 1.6 + 85), 200, 64, "Options", "options");
-  ButtonObject exitButton = new ButtonObject("exitButton", 50, (int)(yMid * 1.6 + 170), 200, 64, "Exit", "exit");
+  ButtonObject startButton = new ButtonObject("startButton", 50, (int)(yMid * 1.5), 200, 64, "Start", "scene01");
+  ButtonObject optionsButton = new ButtonObject("optionsButton", 50, (int)(yMid * 1.65), 200, 64, "Options", "options");
+  ButtonObject exitButton = new ButtonObject("exitButton", 50, (int)(yMid * 1.8), 200, 64, "Exit", "exit");
   menu.addGameObject(startButton);
   menu.addGameObject(optionsButton);
   menu.addGameObject(exitButton);
 
   Scene options = new Scene("options", "menu.jpg");
-  ButtonObject backButton = new ButtonObject("backButton", 50, (int)(yMid * 1.6 + 170), 200, 64, "Back", "menu");
+  ButtonObject backButton = new ButtonObject("backButton", 50, (int)(yMid * 1.8), 200, 64, "Back", "menu");
   options.addGameObject(backButton);
 
   Scene scene01 = new Scene("scene01", "back01.png");
