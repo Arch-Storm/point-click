@@ -1,29 +1,32 @@
-int wwidth = 800;
-int wheight = 800;
+int framerate = 60;
 
 final SceneManager sceneManager = new SceneManager();
 final InventoryManager inventoryManager = new InventoryManager();
 
 void settings()
 {
-  size(wwidth, wheight);
+  fullScreen();
 }
 
 void setup()
 {
+  float xMid = width / 2;
+  float yMid = height / 2;
+  frameRate(framerate);
+
   Collectable key = new Collectable("key", "key.png");
   MoveToSceneObject object7 = new MoveToSceneObject("goToScene04_scene01", 206, 461, 50, 50, "arrowUp.png", "scene04");
   
   Scene menu = new Scene("menu", "menu.jpg");
-  ButtonObject startButton = new ButtonObject("startButton", 50, 500, 200, 64, "Start", "scene01");
-  ButtonObject optionsButton = new ButtonObject("optionsButton", 50, 585, 200, 64, "Options", "options");
-  ButtonObject exitButton = new ButtonObject("exitButton", 50, 670, 200, 64, "Exit", "exit");
+  ButtonObject startButton = new ButtonObject("startButton", 50, (int)(yMid * 1.6), 200, 64, "Start", "scene01");
+  ButtonObject optionsButton = new ButtonObject("optionsButton", 50, (int)(yMid * 1.6 + 85), 200, 64, "Options", "options");
+  ButtonObject exitButton = new ButtonObject("exitButton", 50, (int)(yMid * 1.6 + 170), 200, 64, "Exit", "exit");
   menu.addGameObject(startButton);
   menu.addGameObject(optionsButton);
   menu.addGameObject(exitButton);
 
   Scene options = new Scene("options", "menu.jpg");
-  ButtonObject backButton = new ButtonObject("backButton", 50, 670, 200, 64, "Back", "menu");
+  ButtonObject backButton = new ButtonObject("backButton", 50, (int)(yMid * 1.6 + 170), 200, 64, "Back", "menu");
   options.addGameObject(backButton);
 
   Scene scene01 = new Scene("scene01", "back01.png");
@@ -78,7 +81,7 @@ void setup()
 
 void draw()
 {
-  sceneManager.getCurrentScene().draw(wwidth, wheight);
+  sceneManager.getCurrentScene().draw(width, height);
   sceneManager.getCurrentScene().updateScene();
   inventoryManager.clearMarkedForDeathCollectables();
 }
