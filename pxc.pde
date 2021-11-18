@@ -1,7 +1,5 @@
 int framerate = 60;
 
-
-
 final SceneManager sceneManager = new SceneManager();
 final InventoryManager inventoryManager = new InventoryManager();
 
@@ -20,7 +18,7 @@ void setup()
 
   xs = width / 320; // dynamic units
   ys = height / 180;
-  
+
   //init puzzle solved variables
   boolean debugSolvedPuzzles = true;
   boolean scannerIsSolved = debugSolvedPuzzles;
@@ -29,36 +27,31 @@ void setup()
   
   //main menu 
   Scene menu = new Scene("menu", "menu.png");
-  ButtonObject startButton = new ButtonObject("startButton", 3*xs, 135*ys, 200, 64, "Start", "hallway01");
-  ButtonObject optionsButton = new ButtonObject("optionsButton", 3*xs, 150*ys, 200, 64, "Options", "options");
-  ButtonObject exitButton = new ButtonObject("exitButton", 3*xs, 165*ys, 200, 64, "Exit", "exit");
+  ButtonObject startButton = new ButtonObject("startButton", 3*xs, 135*ys, 32*xs, 22*ys, "Start", "hallway01");
+  ButtonObject optionsButton = new ButtonObject("optionsButton", 3*xs, 150*ys, 32*xs, 22*ys, "Options", "options");
+  ButtonObject exitButton = new ButtonObject("exitButton", 3*xs, 165*ys, 32*xs, 22*ys, "Exit", "exit");
   menu.addGameObject(startButton);
   menu.addGameObject(optionsButton);
   menu.addGameObject(exitButton);
 
   //options
   Scene options = new Scene("options", "menu.png");
-  ButtonObject backButton = new ButtonObject("backButton", 50, 165*ys, 200, 64, "Back", "menu");
-  
-  Collectable key = new Collectable("key", "key.png");
-  Collectable key2 = new Collectable("key2", "key.png");
-  MoveToSceneObject object7 = new MoveToSceneObject("goToScene04_scene01", 206, 461, 50, 50, "arrowUp.png", "scene04");
+  ButtonObject backButton = new ButtonObject("backButton", 3*xs, 165*ys, 32*xs, 22*ys, "Back", "menu");
   options.addGameObject(backButton);
   
-  
 
+/*------Scenes & room navigation-------*/
 
-//Scenes & room navigation
 //storageRoom
   Scene storageRoom = new Scene("storageRoom", "TEMP_storageRoom.png" );
 
   //to hallway02 (back)
-  MoveToSceneObject storageTohallway02 = new MoveToSceneObject("storageRoom_hallway02", int(xMid), int(yMid) + 300, 100, 100, "arrowDown.png", true);
+  MoveToSceneObject storageTohallway02 = new MoveToSceneObject("storageRoom_hallway02", 160*xs, 160*ys, 8*xs, 8*xs, "arrowDown.png", true);
   storageRoom.addGameObject(storageTohallway02);
 
   //TODO add knife to storage room
   Collectable knife = new Collectable("knife", "TEMP_knife.png");
-  CollectableObject knifeObject = new CollectableObject("storage_room", width/4, height/5, width/20, width/20, true, knife);
+  CollectableObject knifeObject = new CollectableObject("storage_room", 80*xs, 36*ys, 16*xs, 16*xs, true, knife);
   storageRoom.addGameObject(knifeObject);
 
 
@@ -66,37 +59,31 @@ void setup()
   Scene barracksRoom = new Scene("barracksRoom", "TEMP_barracksRoom.png" );
 
   //to hallway01 (back)
-  MoveToSceneObject barrackstohallway01 = new MoveToSceneObject("barracks_hallway01", int(xMid), int(yMid) + 300, 100, 100, "arrowDown.png", true);
+  MoveToSceneObject barrackstohallway01 = new MoveToSceneObject("barracks_hallway01", 160*xs, 160*ys, 8*xs, 8*xs, "arrowDown.png", true);
   barracksRoom.addGameObject(barrackstohallway01);
 
 //controlroom
   Scene controlRoom = new Scene("controlRoom", "TEMP_controlRoom.png" );
 
   //to hallway01 (back)
-  MoveToSceneObject controltohallway01 = new MoveToSceneObject("controlRoom_hallway01", int(xMid)-100, int(yMid) + 300, 100, 100, "arrowDown.png", "hallway01");
+  MoveToSceneObject controltohallway01 = new MoveToSceneObject("controlRoom_hallway01", 160*xs, 160*ys, 8*xs, 8*xs, "arrowDown.png", "hallway01");
   controlRoom.addGameObject(controltohallway01);
 
 
 //hallway01
   Scene hallway01 = new Scene("hallway01", "TEMP_hallway01.png" );
 
-  //is this code still used?
-  CollectableObject object6 = new CollectableObject("apple_scene03", width/4, height/5, width/20, width/20, true, key);
-  CollectableObject object62 = new CollectableObject("apple_scene03_2", width/5, height/5, width/20, width/20, true, key2);
-  hallway01.addGameObject(object6);
-  hallway01.addGameObject(object62);
-
   //to hallway02
-  MoveToSceneObject h1ToHallway02 = new MoveToSceneObject("hallway01_hallway02", int(xMid), int(yMid), 100, 100, "arrowUp.png", "hallway02");
+  MoveToSceneObject h1ToHallway02 = new MoveToSceneObject("hallway01_hallway02", 160*xs, 90*ys, 8*xs, 8*xs, "arrowUp.png", "hallway02");
   hallway01.addGameObject(h1ToHallway02);
 
   //to barracksRoom
-  MoveToSceneObject h1tobarracksRoom = new MoveToSceneObject("hallway01_barracksRoom", int(xMid) - 300, int(yMid), 100, 100, "arrowLeft.png", "barracksRoom");
+  MoveToSceneObject h1tobarracksRoom = new MoveToSceneObject("hallway01_barracksRoom", 130*xs, 90*ys, 8*xs, 8*xs, "arrowLeft.png", "barracksRoom");
   hallway01.addGameObject(h1tobarracksRoom);
 
   //to Controlroom (needs check)
   if(scannerIsSolved || debugSolvedPuzzles){
-    MoveToSceneObject h1tocontrolRoom = new MoveToSceneObject("hallway01_controlRoom", int(xMid) + 300, int(yMid), 100, 100, "arrowRight.png", "controlRoom");
+    MoveToSceneObject h1tocontrolRoom = new MoveToSceneObject("hallway01_controlRoom", 190*xs, 90*ys, 8*xs, 8*xs, "arrowRight.png", "controlRoom");
     hallway01.addGameObject(h1tocontrolRoom);
   }
   else{
@@ -108,16 +95,16 @@ void setup()
   Scene hallway02 = new Scene("hallway02", "TEMP_hallway02.png");
 
   //to hallway01
-  MoveToSceneObject h2ToHallway01 = new MoveToSceneObject("hallway02_hallway01", int(xMid), int(yMid) + 300, 100, 100, "arrowDown.png", "hallway01");
+  MoveToSceneObject h2ToHallway01 = new MoveToSceneObject("hallway02_hallway01", 160*xs, 160*ys, 8*xs, 8*xs, "arrowDown.png", "hallway01");
   hallway02.addGameObject(h2ToHallway01);
 
   //to hallway03
-  MoveToSceneObject h2ToHallway03 = new MoveToSceneObject("hallway02_hallway03", int(xMid), int(yMid) - 300, 100, 100, "arrowUp.png", "hallway03");
+  MoveToSceneObject h2ToHallway03 = new MoveToSceneObject("hallway02_hallway03", 160*xs, 70*ys, 8*xs, 8*xs, "arrowUp.png", "hallway03");
   hallway02.addGameObject(h2ToHallway03);
 
   //toStorageRoom
   if(storageLockIsSolved || debugSolvedPuzzles){
-    MoveToSceneObject h2ToStorageRoom = new MoveToSceneObject("hallway02_StorageRoom", int(xMid) + 300, int(yMid), 100, 100, "arrowRight.png", "storageRoom");
+    MoveToSceneObject h2ToStorageRoom = new MoveToSceneObject("hallway02_StorageRoom", 215*xs, 90*ys, 8*xs, 8*xs, "arrowRight.png", "storageRoom");
     hallway02.addGameObject(h2ToStorageRoom);
   }
   else{
@@ -127,43 +114,44 @@ void setup()
   Scene hallway03 = new Scene("hallway03", "TEMP_hallway03.png");
 
   //to hallway 02
-  MoveToSceneObject h3ToHallway02 = new MoveToSceneObject("hallway03_hallway02", int(xMid), int(yMid) + 300, 100, 100, "arrowDown.png", "hallway02");
+  MoveToSceneObject h3ToHallway02 = new MoveToSceneObject("hallway03_hallway02", 160*xs, 160*ys, 8*xs, 8*xs, "arrowDown.png", "hallway02");
   hallway03.addGameObject(h3ToHallway02);
   
-//closeups
+/*----closeups-----*/
+
   //hallway02locker_keycodes
     Scene lockerPuzzle = new Scene("lockerPuzzle", "TEMP_puzzleLocker.png");
 
     //back to hallway02
-    MoveToSceneObject lockerpuzzletohallway02 = new MoveToSceneObject("controlRoom_hallway02", int(xMid), int(yMid) + 300, 100, 100, "arrowDown.png", true);
+    MoveToSceneObject lockerpuzzletohallway02 = new MoveToSceneObject("controlRoom_hallway02", 160*xs, 160*ys, 8*xs, 8*xs, "arrowDown.png", true);
     lockerPuzzle.addGameObject(lockerpuzzletohallway02);
 
     //TODO locker puzzle code 
 
     //if player has NOT solved locker puzzle
     if(!lockerLockIsSolved || !debugSolvedPuzzles){
-      MoveToSceneObject h2LockerPuzzle = new MoveToSceneObject("hallway02_lockerPuzzle", int(xMid) - 300, int(yMid), 100, 100, "zoom.png", "lockerPuzzle");
+      MoveToSceneObject h2LockerPuzzle = new MoveToSceneObject("hallway02_lockerPuzzle", 130*xs, 90*ys, 8*xs, 8*xs, "zoom.png", "lockerPuzzle");
       hallway02.addGameObject(h2LockerPuzzle);
       h2LockerPuzzle.setHoverImage("zoomIn.png");
     }
   //hallway02Door_fingerscanner
     Scene scannerPuzzle = new Scene("scannerPuzzle","TEMP_puzzlescanner.png");
     if(!scannerIsSolved){
-      MoveToSceneObject h1scannerPuzzle = new MoveToSceneObject("hallway01_scannerPuzzle", int(xMid) + 300, int(yMid), 100, 100, "zoom.png", "scannerPuzzle");
+      MoveToSceneObject h1scannerPuzzle = new MoveToSceneObject("hallway01_scannerPuzzle", 190*xs, 90*ys, 8*xs, 8*xs, "zoom.png", "scannerPuzzle");
       hallway01.addGameObject(h1scannerPuzzle);
     }
     //back to hallway01
-    MoveToSceneObject scannerPuzzleToHallway01 = new MoveToSceneObject("scanner_hallway01", int(xMid), int(yMid) + 300, 100, 100, "arrowDown.png", true);
+    MoveToSceneObject scannerPuzzleToHallway01 = new MoveToSceneObject("scanner_hallway01", 160*xs, 160*ys, 8*xs, 8*xs, "arrowDown.png", true);
     scannerPuzzle.addGameObject(scannerPuzzleToHallway01);
 
   //controlRoom_Documents
     Scene documentPuzzle = new Scene("documentPuzzle","TEMP_documentPuzzle.png");
 
-    MoveToSceneObject cRTodocumentPuzzle = new MoveToSceneObject("controlRoom_documentPuzzle", int(xMid) + 300, int(yMid), 100, 100, "zoom.png", "documentPuzzle");
+    MoveToSceneObject cRTodocumentPuzzle = new MoveToSceneObject("controlRoom_documentPuzzle", 190*xs, 90*ys, 8*xs, 8*xs, "zoom.png", "documentPuzzle");
     controlRoom.addGameObject(cRTodocumentPuzzle);
 
     //back to control room (BACK)
-    MoveToSceneObject dPuzzleToControlRoom = new MoveToSceneObject("documentPuzzle_controlroom", int(xMid), int(yMid) + 300, 100, 100, "arrowDown.png", true);
+    MoveToSceneObject dPuzzleToControlRoom = new MoveToSceneObject("documentPuzzle_controlroom", 160*xs, 160*ys, 8*xs, 8*xs, "arrowDown.png", true);
     documentPuzzle.addGameObject(dPuzzleToControlRoom);
 
     //TODO Code for document puzzle here
@@ -171,11 +159,11 @@ void setup()
   //controlRoom_Computer
     Scene computerScreen = new Scene("computerScreen","TEMP_computerScreen.png");
 
-    MoveToSceneObject cRToComputerScreen = new MoveToSceneObject("controlRoom_computerScreen", int(xMid) - 300, int(yMid), 100, 100, "zoom.png", "computerScreen");
+    MoveToSceneObject cRToComputerScreen = new MoveToSceneObject("controlRoom_computerScreen", 130*xs, 90*ys, 8*xs, 8*xs, "zoom.png", "computerScreen");
     controlRoom.addGameObject(cRToComputerScreen);
 
     //back to control room
-    MoveToSceneObject computerScreenToControlRoom = new MoveToSceneObject("computerScreen_controlroom", int(xMid), int(yMid) + 300, 100, 100, "arrowDown.png", true);
+    MoveToSceneObject computerScreenToControlRoom = new MoveToSceneObject("computerScreen_controlroom", 160*xs, 160*ys, 8*xs, 8*xs, "arrowDown.png", true);
     computerScreen.addGameObject(computerScreenToControlRoom);
     //TODO button to unlock exit 
 }

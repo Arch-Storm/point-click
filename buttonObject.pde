@@ -18,9 +18,9 @@ class ButtonObject extends GameObject {
     public void draw() {
         super.draw();
         fill(0, 0, 0, 255);
-        rect(this.x, this.y, width/10, textHeight, 8);
+        rect(this.x, this.y, 32*xs, (int)(textHeight*0.9), 1*xs);
         fill(255);
-        textSize(width / 40);
+        textSize(8*xs);
         text(text, this.x + 15, this.y, textWidth, textHeight); 
     }
 
@@ -46,12 +46,13 @@ class ButtonObject extends GameObject {
     public void calculateTextArea() {
     textWidth = textWidth(text);
     float remaining = textWidth - 300;
-    textWidth = (textWidth > 300) ? 300 : textWidth * ceil(width/480.0f);
+    textWidth = (textWidth > 300) ? 300 : textWidth * 0.75*xs;
     textHeight = (int)(width/40*1.5);
     while(remaining > 300)
     {
       textHeight += 30;
       remaining -= 300;
     }
+    oheight = (int)(textHeight*0.9);
   }
 }
