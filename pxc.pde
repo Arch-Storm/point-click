@@ -6,10 +6,16 @@ final InventoryManager inventoryManager = new InventoryManager();
 public int xs;
 public int ys;
 
+  //init puzzle solved variables
+public boolean debugSolvedPuzzles = false;
+public boolean scannerIsSolved = debugSolvedPuzzles;
+public boolean storageLockIsSolved = debugSolvedPuzzles;
+public boolean lockerLockIsSolved = debugSolvedPuzzles;
+
 void settings()
 {
-  fullScreen();
-  //size(1920, 1080);
+  //fullScreen();
+  size(1920, 1080);
 }
 
 void setup()
@@ -18,12 +24,6 @@ void setup()
 
   xs = width / 320; // dynamic units
   ys = height / 180;
-
-  //init puzzle solved variables
-  boolean debugSolvedPuzzles = true;
-  boolean scannerIsSolved = debugSolvedPuzzles;
-  boolean storageLockIsSolved = debugSolvedPuzzles;
-  boolean lockerLockIsSolved = debugSolvedPuzzles;
   
   //main menu 
   Scene menu = new Scene("menu", "menu.png");
@@ -74,16 +74,16 @@ void setup()
   Scene hallway01 = new Scene("hallway01", "TEMP_hallway01.png" );
 
   //to hallway02
-  MoveToSceneObject h1ToHallway02 = new MoveToSceneObject("hallway01_hallway02", 160*xs, 90*ys, 8*xs, 8*xs, "arrowUp.png", "hallway02");
+  MoveToSceneObject h1ToHallway02 = new MoveToSceneObject("hallway01_hallway02", 160*xs, 20*ys, 8*xs, 8*xs, "arrowUp.png", "hallway02");
   hallway01.addGameObject(h1ToHallway02);
 
   //to barracksRoom
-  MoveToSceneObject h1tobarracksRoom = new MoveToSceneObject("hallway01_barracksRoom", 130*xs, 90*ys, 8*xs, 8*xs, "arrowLeft.png", "barracksRoom");
+  MoveToSceneObject h1tobarracksRoom = new MoveToSceneObject("hallway01_barracksRoom", 60*xs, 90*ys, 8*xs, 8*xs, "arrowLeft.png", "barracksRoom");
   hallway01.addGameObject(h1tobarracksRoom);
 
   //to Controlroom (needs check)
   if(scannerIsSolved || debugSolvedPuzzles){
-    MoveToSceneObject h1tocontrolRoom = new MoveToSceneObject("hallway01_controlRoom", 190*xs, 90*ys, 8*xs, 8*xs, "arrowRight.png", "controlRoom");
+    MoveToSceneObject h1tocontrolRoom = new MoveToSceneObject("hallway01_controlRoom", 260*xs, 90*ys, 8*xs, 8*xs, "arrowRight.png", "controlRoom");
     hallway01.addGameObject(h1tocontrolRoom);
   }
   else{
@@ -126,18 +126,21 @@ void setup()
     MoveToSceneObject lockerpuzzletohallway02 = new MoveToSceneObject("controlRoom_hallway02", 160*xs, 160*ys, 8*xs, 8*xs, "arrowDown.png", true);
     lockerPuzzle.addGameObject(lockerpuzzletohallway02);
 
-    //TODO locker puzzle code 
+    //locker puzzle code 
+    LockerPuzzleObject lockerPuzzleObject = new LockerPuzzleObject("hallway02_lockerPuzzleObject", 160*xs, 130*ys, 160*xs, 90*ys, "123");
+    lockerPuzzle.addGameObject(lockerPuzzleObject);
 
     //if player has NOT solved locker puzzle
     if(!lockerLockIsSolved || !debugSolvedPuzzles){
-      MoveToSceneObject h2LockerPuzzle = new MoveToSceneObject("hallway02_lockerPuzzle", 130*xs, 90*ys, 8*xs, 8*xs, "zoom.png", "lockerPuzzle");
+      MoveToSceneObject h2LockerPuzzle = new MoveToSceneObject("hallway02_lockerPuzzle", 105*xs, 95*ys, 8*xs, 8*xs, "zoom.png", "lockerPuzzle");
       hallway02.addGameObject(h2LockerPuzzle);
       h2LockerPuzzle.setHoverImage("zoomIn.png");
     }
+
   //hallway02Door_fingerscanner
     Scene scannerPuzzle = new Scene("scannerPuzzle","TEMP_puzzlescanner.png");
     if(!scannerIsSolved){
-      MoveToSceneObject h1scannerPuzzle = new MoveToSceneObject("hallway01_scannerPuzzle", 190*xs, 90*ys, 8*xs, 8*xs, "zoom.png", "scannerPuzzle");
+      MoveToSceneObject h1scannerPuzzle = new MoveToSceneObject("hallway01_scannerPuzzle", 215*xs, 90*ys, 8*xs, 8*xs, "zoom.png", "scannerPuzzle");
       hallway01.addGameObject(h1scannerPuzzle);
     }
     //back to hallway01
