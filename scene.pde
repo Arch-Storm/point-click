@@ -2,6 +2,7 @@ class Scene {
   private String sceneName;
   private PImage backgroundImage;
   private ArrayList<GameObject> gameObjects;
+  public ArrayList<GameObject> hiddenObjects;
   
   private ArrayList<GameObject> recentlyAddedGameObjects;
   private ArrayList<GameObject> markedForDeathGameObjects;
@@ -10,6 +11,7 @@ class Scene {
     this.sceneName = sceneName;
     this.backgroundImage = loadImage(backgroundImageFile);
     gameObjects = new ArrayList<GameObject>();
+    hiddenObjects = new ArrayList<GameObject>();
     markedForDeathGameObjects = new ArrayList<GameObject>();
     recentlyAddedGameObjects = new ArrayList<GameObject>();
     //added this so that it automatically adds a new scene to the scenemanager
@@ -19,9 +21,17 @@ class Scene {
   public void addGameObject(GameObject object) {
     recentlyAddedGameObjects.add(object);
   }
+
+  public void addHiddenObject(GameObject object) {
+    hiddenObjects.add(object);
+  }
   
   public void removeGameObject(GameObject object) {
     markedForDeathGameObjects.add(object);
+  }
+
+  public void removeByIndex(int index) {
+    gameObjects.remove(index);
   }
   
   public void updateScene() {

@@ -103,7 +103,7 @@ void setup()
   hallway02.addGameObject(h2ToHallway03);
 
   //toStorageRoom
-  if(storageLockIsSolved || debugSolvedPuzzles){
+  if (storageLockIsSolved || debugSolvedPuzzles) {
     MoveToSceneObject h2ToStorageRoom = new MoveToSceneObject("hallway02_StorageRoom", 215*xs, 90*ys, 8*xs, 8*xs, "arrowRight.png", "storageRoom");
     hallway02.addGameObject(h2ToStorageRoom);
   }
@@ -123,19 +123,34 @@ void setup()
     Scene lockerPuzzle = new Scene("lockerPuzzle", "TEMP_puzzleLocker.png");
 
     //back to hallway02
-    MoveToSceneObject lockerpuzzletohallway02 = new MoveToSceneObject("controlRoom_hallway02", 160*xs, 160*ys, 8*xs, 8*xs, "arrowDown.png", true);
+    MoveToSceneObject lockerpuzzletohallway02 = new MoveToSceneObject("lockerPuzzle_hallway02", 160*xs, 160*ys, 8*xs, 8*xs, "arrowDown.png", true);
     lockerPuzzle.addGameObject(lockerpuzzletohallway02);
 
     //locker puzzle code 
-    LockerPuzzleObject lockerPuzzleObject = new LockerPuzzleObject("hallway02_lockerPuzzleObject", 160*xs, 130*ys, 160*xs, 90*ys, "123");
+    String correctLockerCode = "123";
+    LockerPuzzleObject lockerPuzzleObject = new LockerPuzzleObject("hallway02_lockerPuzzleObject", 160*xs, 130*ys, 160*xs, 90*ys, correctLockerCode);
     lockerPuzzle.addGameObject(lockerPuzzleObject);
 
+    //to locker puzzle
+    MoveToSceneObject h2LockerPuzzle = new MoveToSceneObject("hallway02_lockerPuzzle", 105*xs, 95*ys, 8*xs, 8*xs, "zoom.png", "lockerPuzzle");
+    h2LockerPuzzle.setHoverImage("zoomIn.png");
+
+    //to open locker
+    MoveToSceneObject h2OpenLocker = new MoveToSceneObject("hallway02_openLocker", 105*xs, 95*ys, 8*xs, 8*xs, "zoom.png", "openLocker");
+    h2OpenLocker.setHoverImage("zoomIn.png");
+    hallway02.addHiddenObject(h2OpenLocker);
+
     //if player has NOT solved locker puzzle
-    if(!lockerLockIsSolved || !debugSolvedPuzzles){
-      MoveToSceneObject h2LockerPuzzle = new MoveToSceneObject("hallway02_lockerPuzzle", 105*xs, 95*ys, 8*xs, 8*xs, "zoom.png", "lockerPuzzle");
+    if (!debugSolvedPuzzles) {
       hallway02.addGameObject(h2LockerPuzzle);
-      h2LockerPuzzle.setHoverImage("zoomIn.png");
     }
+
+  //hallway02open_locker
+    Scene openLocker = new Scene("openLocker", "TEMP_openLocker.png");
+
+    //back to hallway02
+    MoveToSceneObject openlockertohallway02 = new MoveToSceneObject("openLocker_hallway02", 160*xs, 160*ys, 8*xs, 8*xs, "arrowDown.png", "hallway02");
+    openLocker.addGameObject(openlockertohallway02);
 
   //hallway02Door_fingerscanner
     Scene scannerPuzzle = new Scene("scannerPuzzle","TEMP_puzzlescanner.png");

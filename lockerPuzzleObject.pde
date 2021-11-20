@@ -1,5 +1,3 @@
-// NON FUNCTIONAL MORE OR LESS
-
 class LockerPuzzleObject extends GameObject {
     private String correctLockerCode;
     private String currentCode = "000";
@@ -11,12 +9,12 @@ class LockerPuzzleObject extends GameObject {
         super(identifier, x, y, owidth, oheight);
         this.correctLockerCode = correctLockerCode;
 
-        this.lockerPuzzleArrows[0] = new LockerPuzzleArrow(true, 0, 115*xs, 60*ys, 40*xs, 40*xs);
-        this.lockerPuzzleArrows[1] = new LockerPuzzleArrow(true, 1, 160*xs, 60*ys, 40*xs, 40*xs);
-        this.lockerPuzzleArrows[2] = new LockerPuzzleArrow(true, 2, 205*xs, 60*ys, 40*xs, 40*xs);
-        this.lockerPuzzleArrows[3] = new LockerPuzzleArrow(false, 0, 115*xs, 140*ys, 40*xs, 40*xs);
-        this.lockerPuzzleArrows[4] = new LockerPuzzleArrow(false, 1, 160*xs, 140*ys, 40*xs, 40*xs);
-        this.lockerPuzzleArrows[5] = new LockerPuzzleArrow(false, 2, 205*xs, 140*ys, 40*xs, 40*xs);
+        this.lockerPuzzleArrows[0] = new LockerPuzzleArrow(true, 0, 95*xs, 40*ys, 40*xs, 40*xs);
+        this.lockerPuzzleArrows[1] = new LockerPuzzleArrow(true, 1, 140*xs, 40*ys, 40*xs, 40*xs);
+        this.lockerPuzzleArrows[2] = new LockerPuzzleArrow(true, 2, 185*xs, 40*ys, 40*xs, 40*xs);
+        this.lockerPuzzleArrows[3] = new LockerPuzzleArrow(false, 0, 95*xs, 120*ys, 40*xs, 40*xs);
+        this.lockerPuzzleArrows[4] = new LockerPuzzleArrow(false, 1, 140*xs, 120*ys, 40*xs, 40*xs);
+        this.lockerPuzzleArrows[5] = new LockerPuzzleArrow(false, 2, 185*xs, 120*ys, 40*xs, 40*xs);
     }
 
     @Override
@@ -25,27 +23,37 @@ class LockerPuzzleObject extends GameObject {
         textAlign(CENTER);
         text(currentCode, x, y);
 
-        imageMode(CENTER);
         for (LockerPuzzleArrow arrow : lockerPuzzleArrows) arrow.draw();
-        imageMode(CORNER);
         image(checkMark, x + 80*xs, y - 50*ys, 40*xs, 40*xs);
     }
 
     @Override
-    public void mouseClicked() {
-        if (mouseIsHovering) {
-            for (LockerPuzzleArrow arrow : lockerPuzzleArrows) {
-                currentCode = arrow.mouseClicked(currentCode);
-            }
-            if (mouseX >= x + 80*xs && mouseX <= x + 120*xs &&
-                mouseY >= y - 50*ys && mouseY <= y - 50*ys + 40*xs) {
-                lockerLockIsSolved = checkCode();
-            }
+    public void mouseMoved() {
+    mouseIsHovering = false;
+    if (mouseX >= x - owidth / 2 && mouseX <= x + owidth / 2 &&
+        mouseY >= y - oheight && mouseY <= y + oheight / 2) {
+            mouseIsHovering = true;
         }
     }
 
-    public boolean checkCode() {
-        return (currentCode.matches(correctLockerCode)) ? true : false;
+    @Override
+    public void mouseClicked() {
+        for (LockerPuzzleArrow arrow : lockerPuzzleArrows) {
+            currentCode = arrow.mouseClicked(currentCode, x, y, owidth, oheight);
+        }
+        if (mouseX >= x + 80*xs && mouseX <= x + 120*xs &&
+            mouseY >= y - 50*ys && mouseY <= y - 50*ys + 40*xs &&
+            currentCode.matches(correctLockerCode)) {
+
+            /* ATTENTION: Ugly code incoming (don't want to spend the time to do this stuff safely) */
+            sceneManager.scenes.get("hallway02").removeByIndex(2); // remove the MoveToSceneObject for the locker
+            sceneManager.scenes.get("hallway02").addGameObject(sceneManager.scenes.get("hallway02").hiddenObjects.get(0)); // add movetosceneobject from hallway02 to openlocker
+            try {
+                sceneManager.goToScene("openLocker");
+            } catch(Exception e) { 
+                println(e.getMessage());
+            }
+        }
     }
 }
 
@@ -72,15 +80,20 @@ class LockerPuzzleArrow {
         image(img, x, y, owidth, oheight);
     }
 
-    public String mouseClicked(String currentCode) {
+    public String mouseClicked(String currentCode, int pX, int pY, int pOwidth, int pOheight) {
         if (mouseX >= x && mouseX <= x + owidth &&
             mouseY >= y && mouseY <= y + oheight) {
             char[] chars = new char[3];
 
             currentCode.getChars(0, 3, chars, 0); // String to array of chars
             int i = chars[index] - '0'; // Converts char to int (somehow)
-            if (isHigher) i++;
-            else i--;
+            if (isHigher) {
+                if (i != 9) i++;
+                else i = 0;
+            } else {
+                if (i != 0) i--;
+                else i = 9;
+            } 
             chars[index] = (char)(i + '0'); // Back to char
 
             return new String(chars);
