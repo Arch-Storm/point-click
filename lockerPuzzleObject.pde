@@ -44,7 +44,6 @@ class LockerPuzzleObject extends GameObject {
         if (mouseX >= x + 80*xs && mouseX <= x + 120*xs &&
             mouseY >= y - 50*ys && mouseY <= y - 50*ys + 40*xs &&
             currentCode.matches(correctLockerCode)) {
-
             /* ATTENTION: Ugly code incoming (don't want to spend the time to do this stuff safely) */
             sceneManager.scenes.get("hallway02").removeByIndex(2); // remove the MoveToSceneObject for the locker
             sceneManager.scenes.get("hallway02").addGameObject(sceneManager.scenes.get("hallway02").hiddenObjects.get(0)); // add movetosceneobject from hallway02 to openlocker
