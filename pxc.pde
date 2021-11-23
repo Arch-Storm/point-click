@@ -9,17 +9,27 @@ public int ys;
 //init puzzle solved variables
 public boolean debugSolvedPuzzles = false;
 
+public String mainFontFile = "TEMP_FiraSans.ttf";
+
 void settings()
 {
-  //fullScreen();
-  size(1600, 900);
+  fullScreen(P2D);
+  //size(1600, 900, P2D);
+
+  smooth(8);
 }
 
 void setup()
 {
   frameRate(framerate);
 
-  xs = width / 320; // dynamic units
+  // Weird workarounds to make the Fonts display correctly after moving to P2D
+  textMode(SHAPE);
+  PFont mainFont = createFont(mainFontFile, 12, true);
+  textFont(mainFont);
+
+  // dynamic units
+  xs = width / 320;
   ys = height / 180;
   
   //main menu 
