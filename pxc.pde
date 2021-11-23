@@ -78,6 +78,23 @@ void setup()
   MoveToSceneObject h1tobarracksRoom = new MoveToSceneObject("hallway01_barracksRoom", 90*xs, 90*ys, 16*xs, 16*xs, "arrowLeft.png", "barracksRoom");
   hallway01.addGameObject(h1tobarracksRoom);
 
+  //hallway01_exit_keypad
+    Scene keypadPuzzle = new Scene("keypadPuzzle", "hallway01_closeup.jpg");
+
+    //hallway01 to keypadPuzzle
+    MoveToSceneObject h1keypadPuzzle = new MoveToSceneObject("hallway01_keypadPuzzle", 156*xs, 70*ys, 16*xs, 16*xs, "zoom.png", "keypadPuzzle");
+    h1keypadPuzzle.setHoverImage("zoomIn.png");
+    hallway01.addGameObject(h1keypadPuzzle);
+
+    //back to hallway01
+    MoveToSceneObject keypadPuzzleToH1 = new MoveToSceneObject("keypadPuzzle_hallway01", 156*xs, 160*ys, 16*xs, 16*xs, "arrowDown.png", "hallway01");
+    keypadPuzzle.addGameObject(keypadPuzzleToH1);
+
+    //keypad puzzle
+    String correctKeypadCode = "111";
+    KeypadPuzzleObject keypadPuzzleObject = new KeypadPuzzleObject("hallway03_keypadPuzzleObject", 103*xs, 10*ys, 120*xs, 168*ys, correctKeypadCode, "lock_wrong.png");
+    keypadPuzzle.addGameObject(keypadPuzzleObject);
+
   //to Controlroom (needs check)
   if(debugSolvedPuzzles){
     MoveToSceneObject h1tocontrolRoom = new MoveToSceneObject("hallway01_controlRoom", 220*xs, 90*ys, 16*xs, 16*xs, "arrowRight.png", "controlRoom");
@@ -94,10 +111,6 @@ void setup()
   //to hallway01
   MoveToSceneObject h2ToHallway01 = new MoveToSceneObject("hallway02_hallway01", 156*xs, 160*ys, 16*xs, 16*xs, "arrowDown.png", "hallway01");
   hallway02.addGameObject(h2ToHallway01);
-
-  //to hallway03
-  MoveToSceneObject h2ToHallway03 = new MoveToSceneObject("hallway02_hallway03", 156*xs, 70*ys, 8*xs, 8*xs, "arrowUp.png", "hallway03");
-  hallway02.addGameObject(h2ToHallway03);
 
   //toStorageRoom
   if (debugSolvedPuzzles) {
@@ -150,6 +163,13 @@ void setup()
     MoveToSceneObject openlockertohallway02 = new MoveToSceneObject("openLocker_hallway02", 156*xs, 160*ys, 16*xs, 16*xs, "arrowDown.png", "hallway02");
     openLocker.addGameObject(openlockertohallway02);
 
+    //key to storage room
+    Collectable storageKey = new Collectable("storageKey", "key.png");
+    CollectableObject storagekeyObject = new CollectableObject("openlocker", 80*xs, 36*ys, 16*xs, 16*xs, true, storageKey);
+    openLocker.addGameObject(storagekeyObject);
+
+
+
   //hallway02Door_fingerscanner
     Scene scannerPuzzle = new Scene("scannerPuzzle","TEMP_puzzlescanner.png");
     if(!debugSolvedPuzzles){
@@ -159,23 +179,6 @@ void setup()
     //back to hallway01
     MoveToSceneObject scannerPuzzleToHallway01 = new MoveToSceneObject("scanner_hallway01", 156*xs, 160*ys, 16*xs, 16*xs, "arrowDown.png", true);
     scannerPuzzle.addGameObject(scannerPuzzleToHallway01);
-
-  //hallway03_exit_keypad
-    Scene keypadPuzzle = new Scene("keypadPuzzle", "TEMP_puzzleLocker.png");
-
-    //hallway03 to keypadPuzzle
-    MoveToSceneObject h3keypadPuzzle = new MoveToSceneObject("hallway03_keypadPuzzle", 156*xs, 70*ys, 16*xs, 16*xs, "arrowUp.png", "keypadPuzzle");
-    hallway03.addGameObject(h3keypadPuzzle);
-
-    //back to hallway03
-    MoveToSceneObject keypadPuzzleToH3 = new MoveToSceneObject("keypadPuzzle_hallway03", 156*xs, 160*ys, 16*xs, 16*xs, "arrowDown.png", "hallway03");
-    keypadPuzzle.addGameObject(keypadPuzzleToH3);
-
-    //keypad puzzle
-    String correctKeypadCode = "111";
-    KeypadPuzzleObject keypadPuzzleObject = new KeypadPuzzleObject("hallway03_keypadPuzzleObject", 103*xs, 10*ys, 120*xs, 168*ys, correctKeypadCode, "lock_wrong.png");
-    keypadPuzzle.addGameObject(keypadPuzzleObject);
-
 
   //controlRoom_Documents
     Scene documentPuzzle = new Scene("documentPuzzle","TEMP_documentPuzzle.png");
