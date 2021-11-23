@@ -98,10 +98,6 @@ void setup()
   MoveToSceneObject h2ToHallway01 = new MoveToSceneObject("hallway02_hallway01", 160*xs, 160*ys, 8*xs, 8*xs, "arrowDown.png", "hallway01");
   hallway02.addGameObject(h2ToHallway01);
 
-  //to hallway03
-  MoveToSceneObject h2ToHallway03 = new MoveToSceneObject("hallway02_hallway03", 160*xs, 70*ys, 8*xs, 8*xs, "arrowUp.png", "hallway03");
-  hallway02.addGameObject(h2ToHallway03);
-
   //toStorageRoom
   if (storageLockIsSolved || debugSolvedPuzzles) {
     MoveToSceneObject h2ToStorageRoom = new MoveToSceneObject("hallway02_StorageRoom", 215*xs, 90*ys, 8*xs, 8*xs, "arrowRight.png", "storageRoom");
@@ -110,12 +106,6 @@ void setup()
   else{
     //TODO storage key "puzzle"  (need key to open door) otherwise door will be closed.
   }
-//hallway03 (exit)
-  Scene hallway03 = new Scene("hallway03", "TEMP_hallway03.png");
-
-  //to hallway 02
-  MoveToSceneObject h3ToHallway02 = new MoveToSceneObject("hallway03_hallway02", 160*xs, 160*ys, 8*xs, 8*xs, "arrowDown.png", "hallway02");
-  hallway03.addGameObject(h3ToHallway02);
   
 /*----closeups-----*/
 
