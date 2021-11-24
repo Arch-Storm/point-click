@@ -1,6 +1,8 @@
 class InventoryManager {
   private ArrayList<Collectable> collectables;
   private ArrayList<Collectable> markedForDeathCollectables;
+  private int x;
+  private int y;
   
   public InventoryManager() {
      collectables = new ArrayList<Collectable>();
@@ -26,6 +28,15 @@ class InventoryManager {
       }
       markedForDeathCollectables  = new ArrayList<Collectable>();
     }
+  }
+
+  public void mouseClicked() {
+    x = (int)(width*0.99)-width/20;
+    y = (int)(height * 0.2);
+    if (mouseX >= x && mouseX <= x + width / 20 &&
+        mouseY >= y && mouseY <= y + (int)height * 0.9) {
+          
+        }
   }
 
   public void draw() {

@@ -7,6 +7,7 @@ class GameObject {
   private boolean isDraggable;
   private boolean hasImage;
   private boolean hasHoverImage;
+  private boolean isBeingDragged;
   private PImage gameObjectImage;
   private PImage gameObjectImageHover;
   protected boolean mouseIsHovering;

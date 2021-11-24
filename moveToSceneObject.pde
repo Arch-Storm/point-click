@@ -30,6 +30,7 @@ class MoveToSceneObject extends GameObject {
   @Override
   public void mouseClicked() {
     if(mouseIsHovering) {
+      cursor(cursors.get("mainCursor"));
       if(moveBack) {
         sceneManager.goToPreviousScene();
       } else {
