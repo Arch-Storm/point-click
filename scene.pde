@@ -6,6 +6,8 @@ class Scene {
   
   private ArrayList<GameObject> recentlyAddedGameObjects;
   private ArrayList<GameObject> markedForDeathGameObjects;
+
+  private String currentCursor = "";
   
   public Scene(String sceneName, String backgroundImageFile) {
     this.sceneName = sceneName;
@@ -57,9 +59,14 @@ class Scene {
   }
   
   public void mouseMoved() {
+    currentCursor = "mainCursor";
     for(GameObject object : gameObjects) {
       object.mouseMoved();
+      if (object.mouseIsHovering) {
+        currentCursor = object.hoverCursor;
+      }
     }
+    cursor(cursors.get(currentCursor));
   }
   
   public void mouseClicked() {

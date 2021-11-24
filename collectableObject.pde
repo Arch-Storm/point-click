@@ -6,13 +6,13 @@ class CollectableObject extends GameObject {
   private boolean isDraggable;
   
   public CollectableObject(String identifier, int x, int y, int owidth, 
-                           int oheight, boolean isDraggable, Collectable collectable) {
-    this(identifier, x, y, owidth, oheight, isDraggable, collectable, null);
+                           int oheight, boolean isDraggable, Collectable collectable, String hoverCursor) {
+    this(identifier, x, y, owidth, oheight, isDraggable, collectable, null, hoverCursor);
   }
   
   public CollectableObject(String identifier, int x, int y, int owidth, 
-                           int oheight, boolean isDraggable, Collectable collectable, GameObject replaceWith) {
-    super(identifier, x, y, owidth, oheight, collectable.getGameObjectImageFile());
+                           int oheight, boolean isDraggable, Collectable collectable, GameObject replaceWith, String hoverCursor) {
+    super(identifier, x, y, owidth, oheight, collectable.getGameObjectImageFile(), hoverCursor);
     this.isDraggable = isDraggable;
     this.collectable = collectable;
     if(replaceWith != null) {
