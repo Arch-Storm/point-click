@@ -5,8 +5,8 @@ class LockerPuzzleObject extends GameObject {
     private LockerPuzzleArrow[] lockerPuzzleArrows = new LockerPuzzleArrow[6];
 
     public LockerPuzzleObject(String identifier, int x, int y, int owidth, 
-                        int oheight, String correctLockerCode) {
-        super(identifier, x, y, owidth, oheight);
+                        int oheight, String correctLockerCode, String hoverCursor) {
+        super(identifier, x, y, owidth, oheight, hoverCursor);
         this.correctLockerCode = correctLockerCode;
 
         this.lockerPuzzleArrows[0] = new LockerPuzzleArrow(true, 0, 95*xs, 40*ys, 40*xs, 40*xs);
@@ -47,6 +47,7 @@ class LockerPuzzleObject extends GameObject {
             /* ATTENTION: Ugly code incoming (don't want to spend the time to do this stuff safely) */
             sceneManager.scenes.get("hallway02").removeByIndex(1); // remove the MoveToSceneObject for the locker
             sceneManager.scenes.get("hallway02").addGameObject(sceneManager.scenes.get("hallway02").hiddenObjects.get(0)); // add movetosceneobject from hallway02 to openlocker
+            sceneManager.goToPreviousScene(); // "remove" the locker scene from the stack
             try {
                 sceneManager.goToScene("openLocker");
             } catch(Exception e) { 

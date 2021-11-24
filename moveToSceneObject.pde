@@ -8,21 +8,21 @@ class MoveToSceneObject extends GameObject {
   private String nextSceneIdentifier;
   private boolean moveBack;
   
-  public MoveToSceneObject(String identifier, int x, int y, int owidth, int oheight, boolean moveBack) {
-    this(identifier, x, y, owidth, oheight, "", moveBack);
+  public MoveToSceneObject(String identifier, int x, int y, int owidth, int oheight, boolean moveBack, String hoverCursor) {
+    this(identifier, x, y, owidth, oheight, "", moveBack, hoverCursor);
   }
   
-  public MoveToSceneObject(String identifier, int x, int y, int owidth, int oheight, String gameObjectImageFile, boolean moveBack) {
-    super(identifier, x, y, owidth, oheight, gameObjectImageFile);
+  public MoveToSceneObject(String identifier, int x, int y, int owidth, int oheight, String gameObjectImageFile, boolean moveBack, String hoverCursor) {
+    super(identifier, x, y, owidth, oheight, gameObjectImageFile, hoverCursor);
     this.moveBack = moveBack;
   }
   
-  public MoveToSceneObject(String identifier, int x, int y, int owidth, int oheight, String nextSceneIdentifier) {
-    this(identifier, x, y, owidth, oheight, "", nextSceneIdentifier);
+  public MoveToSceneObject(String identifier, int x, int y, int owidth, int oheight, String nextSceneIdentifier, String hoverCursor) {
+    this(identifier, x, y, owidth, oheight, "", nextSceneIdentifier, hoverCursor);
   }
   
-  public MoveToSceneObject(String identifier, int x, int y, int owidth, int oheight, String gameObjectImageFile, String nextSceneIdentifier) {
-    super(identifier, x, y, owidth, oheight, gameObjectImageFile);
+  public MoveToSceneObject(String identifier, int x, int y, int owidth, int oheight, String gameObjectImageFile, String nextSceneIdentifier, String hoverCursor) {
+    super(identifier, x, y, owidth, oheight, gameObjectImageFile, hoverCursor);
     this.nextSceneIdentifier = nextSceneIdentifier;
     this.moveBack = false;
   }

@@ -5,8 +5,8 @@ class KeypadPuzzleObject extends GameObject {
     private KeypadButton[] keypadButtons = new KeypadButton[11];
 
     public KeypadPuzzleObject(String identifier, int x, int y, int owidth, 
-                        int oheight, String correctKeypadCode, String imagePath) {
-        super(identifier, x, y, owidth, oheight);
+                        int oheight, String correctKeypadCode, String imagePath, String hoverCursor) {
+        super(identifier, x, y, owidth, oheight, hoverCursor);
         this.correctKeypadCode = correctKeypadCode;
         this.img = loadImage(imagePath);
 
@@ -35,11 +35,11 @@ class KeypadPuzzleObject extends GameObject {
 
     public void addNum(int num) {
         currentCode += num;
-        println(currentCode);
     }
 
     public void checkCode() {
         if (currentCode.matches(correctKeypadCode)) {
+            sceneManager.goToPreviousScene(); // remove current scene from stack
             try {
                 sceneManager.goToScene("ending");
             } catch(Exception e) { 
@@ -56,32 +56,22 @@ class KeypadPuzzleObject extends GameObject {
     }
 }
 
-class KeypadButton {
+class KeypadButton extends GameObject{
     private boolean isEnter;
     private boolean isDelete;
     private int num;
-    private int x;
-    private int y;
-    private int owidth;
-    private int oheight;
 
     public KeypadButton(boolean isEnter, boolean isDelete, int x, int y, int owidth, int oheight) {
+        super("", x, y, owidth, oheight, "interactableCursor");
         this.isEnter = isEnter;
         this.isDelete = isDelete;
-        this.x = x;
-        this.y = y;
-        this.owidth = owidth;
-        this.oheight = oheight;
     }
 
     public KeypadButton(int num, int x, int y, int owidth, int oheight) {
+        super("", x, y, owidth, oheight, "interactableCursor");
         this.isEnter = false;
         this.isDelete = false;
         this.num = num;
-        this.x = x;
-        this.y = y;
-        this.owidth = owidth;
-        this.oheight = oheight;
     }
 
     public void mouseClicked(KeypadPuzzleObject puzzle, String currentCode) {

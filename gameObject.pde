@@ -10,12 +10,13 @@ class GameObject {
   private PImage gameObjectImage;
   private PImage gameObjectImageHover;
   protected boolean mouseIsHovering;
+  private String hoverCursor;
   
-  public GameObject(String identifier, int x, int y, int owidth, int oheight) {
-    this(identifier, x, y, owidth, oheight, "");
+  public GameObject(String identifier, int x, int y, int owidth, int oheight, String hoverCursor) {
+    this(identifier, x, y, owidth, oheight, "", hoverCursor);
   }
   
-  public GameObject(String identifier, int x, int y, int owidth, int oheight, String gameObjectImageFile) {
+  public GameObject(String identifier, int x, int y, int owidth, int oheight, String gameObjectImageFile, String hoverCursor) {
     this.identifier = identifier;
     this.x = x;
     this.y = y;
@@ -25,6 +26,7 @@ class GameObject {
     if(this.hasImage) {
        this.gameObjectImage = loadImage(gameObjectImageFile);
     }
+    this.hoverCursor = hoverCursor;
     hasHoverImage = false;
     mouseIsHovering = false;
   }
@@ -46,10 +48,10 @@ class GameObject {
   
   public void mouseMoved() {
     mouseIsHovering = false;
-    if(mouseX >= x && mouseX <= x + owidth &&
-       mouseY >= y && mouseY <= y + oheight) {
+    if (mouseX >= x + 16 && mouseX <= x + owidth + 16 &&
+        mouseY >= y + 16 && mouseY <= y + oheight + 16) {
         mouseIsHovering = true;
-     }
+    }
   }
   
   public void mouseClicked() { }

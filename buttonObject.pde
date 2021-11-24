@@ -6,8 +6,8 @@ class ButtonObject extends GameObject {
     private boolean moveBack;
 
     public ButtonObject(String identifier, int x, int y, int owidth, 
-                        int oheight, String text, String nextSceneIdentifier ) {
-        super(identifier, x, y, owidth, oheight);
+                        int oheight, String text, String nextSceneIdentifier, String hoverCursor ) {
+        super(identifier, x, y, owidth, oheight, hoverCursor);
         this.text = text;
         this.nextSceneIdentifier = nextSceneIdentifier;
         this.moveBack = false;
