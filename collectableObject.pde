@@ -1,4 +1,5 @@
 class CollectableObject extends GameObject { 
+  private Collectable requiredCollectable;
   private Collectable collectable;
   private GameObject replaceWith;
   private boolean willReplaceByAnotherGameObject;
@@ -20,6 +21,22 @@ class CollectableObject extends GameObject {
     } else {
       this.willReplaceByAnotherGameObject = false;
     }
+  }
+  public CollectableObject(String identifier, int x, int y, int owidth, 
+                           int oheight, boolean isDraggable, Collectable collectable,Collectable requiredCollectable, GameObject replaceWith) {
+    super(identifier, x, y, owidth, oheight, collectable.getGameObjectImageFile());
+    this.isDraggable = isDraggable;
+    this.collectable = collectable;
+    this.requiredCollectable = requiredCollectable;
+    if(inventoryManager.containsCollectable(this.requiredCollectable)){
+      if(replaceWith != null) {
+        this.replaceWith = replaceWith;
+        this.willReplaceByAnotherGameObject = true;
+       } else {
+        this.willReplaceByAnotherGameObject = false;
+      }
+    }
+    
   }
   
   @Override

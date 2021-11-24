@@ -8,11 +8,16 @@ public int ys;
 
 //init puzzle solved variables
 public boolean debugSolvedPuzzles = false;
+public boolean storageRoomUnlocked = false;
 
 public String mainFontFile = "TEMP_FiraSans.ttf";
 
 public String[] cursorFiles = {"mainCursor", "interactableCursor", "upCursor", "downCursor", "rightCursor", "leftCursor"};
 public HashMap<String, PImage> cursors = new HashMap<String, PImage>();
+
+//scuffed but otherwise processing won't be able to use the collectables at all
+Collectable knife = new Collectable("knife", "knife.png");
+Collectable storageKey = new Collectable("storageKeyObject", "key.png");
 
 void settings() {
   //fullScreen(P2D);
@@ -21,7 +26,8 @@ void settings() {
   smooth(8);
 }
 
-void setup() {
+public void setup()
+{
   frameRate(framerate);
 
   // Weird workarounds to make the Fonts display correctly after moving to P2D
@@ -57,10 +63,10 @@ void setup() {
 /*------Scenes & room navigation-------*/
 
 //storageRoom
-  Scene storageRoom = new Scene("storageRoom", "storageRoom.jpg" );
+  Scene storageRoom = new Scene("storageRoom", "storageRoom.png" );
 
   //to hallway02 (back)
-  MoveToSceneObject storageTohallway02 = new MoveToSceneObject("storageRoomHallway02", 152*xs, 160*ys, 16*xs, 16*xs, "arrowUp.png", true, "upCursor");
+  MoveToSceneObject storageTohallway02 = new MoveToSceneObject("storageRoom_hallway02", 240*xs, 40*ys, 180*xs, 180*xs, true, "rightCursor");
   storageRoom.addGameObject(storageTohallway02);
 
   //TODO add knife to storage room
@@ -70,10 +76,10 @@ void setup() {
 
 
 //barracksRoom
-  Scene barracksRoom = new Scene("barracksRoom", "barracks.jpg" );
+  Scene barracksRoom = new Scene("barracksRoom", "barracks.png" );
 
   //to hallway01 (back)
-  MoveToSceneObject barrackstohallway01 = new MoveToSceneObject("barracksHallway01", 140*xs, 100*ys, 16*xs, 16*xs, "arrowUp.png", true, "upCursor");
+  MoveToSceneObject barrackstohallway01 = new MoveToSceneObject("barracks_hallway01", 110*xs, 40*ys, 65*xs, 80*xs, true, "upCursor");
   barracksRoom.addGameObject(barrackstohallway01);
 
   //arm
@@ -82,7 +88,7 @@ void setup() {
   barracksRoom.addGameObject(armObject);
 
 //controlroom
-  Scene controlRoom = new Scene("controlRoom", "controlRoom.jpg");
+  Scene controlRoom = new Scene("controlRoom", "controlRoom.png" );
 
   //to hallway01 (back)
   MoveToSceneObject controltohallway01 = new MoveToSceneObject("controlRoomHallway01", 10*xs, 90*ys, 16*xs, 16*xs, "arrowUp.png", true, "upCursor");
@@ -90,7 +96,7 @@ void setup() {
 
 
 //hallway01
-  Scene hallway01 = new Scene("hallway01", "hallway01.jpg" );
+  Scene hallway01 = new Scene("hallway01", "hallway01.png" );
 
   //to hallway02
   MoveToSceneObject h1ToHallway02 = new MoveToSceneObject("hallway01Hallway02", 64*xs, 150*ys, 192*xs, 42*ys, true, "downCursor");
@@ -100,8 +106,8 @@ void setup() {
   MoveToSceneObject h1tobarracksRoom = new MoveToSceneObject("hallway01BarracksRoom", 72*xs, 44*ys, 48*xs, 80*ys, "barracksRoom", "leftCursor");
   hallway01.addGameObject(h1tobarracksRoom);
 
-  //hallway01ExitKeypad
-    Scene keypadPuzzle = new Scene("keypadPuzzle", "hallway01Closeup.jpg");
+  //hallway01_exit_keypad
+    Scene keypadPuzzle = new Scene("keypadPuzzle", "hallway01_closeup.png");
 
     //hallway01 to keypadPuzzle
     MoveToSceneObject h1keypadPuzzle = new MoveToSceneObject("hallway01KeypadPuzzle", 148*xs, 52*ys, 32*xs, 44*ys, "keypadPuzzle", "upCursor");
@@ -126,19 +132,19 @@ void setup() {
   
 
 //hallway02 
-  Scene hallway02 = new Scene("hallway02", "hallway02.jpg");
+  Scene hallway02 = new Scene("hallway02", "hallway02.png");
 
   //to hallway01
   MoveToSceneObject h2ToHallway01 = new MoveToSceneObject("hallway02Hallway01", 136*xs, 46*ys, 48*xs, 52*xs, "hallway01", "upCursor");
   hallway02.addGameObject(h2ToHallway01);
 
   //toStorageRoom
-  if (debugSolvedPuzzles) {
-    MoveToSceneObject h2ToStorageRoom = new MoveToSceneObject("hallway02StorageRoom", 215*xs, 90*ys, 16*xs, 16*xs, "arrowRight.png", "storageRoom", "rightCursor");
+  if (!storageRoomUnlocked || debugSolvedPuzzles) {
+    StorageDoorLock h2ToStorageRoom = new StorageDoorLock("hallway02_StorageRoom", 200*xs, 30*ys, 48*xs, 80*xs, "storageRoom", "interactableCursor", storageKey);
     hallway02.addGameObject(h2ToStorageRoom);
+    //TODO add door locked sound/ dialogue that door is locked.
   }
-  else{
-    //TODO storage key "puzzle"  (need key to open door) otherwise door will be closed.
+  else{ 
   }
 //hallway03 (exit)
   Scene hallway03 = new Scene("hallway03", "TEMP_ending.png");
@@ -152,8 +158,8 @@ void setup() {
   
 /*----closeups-----*/
 
-  //hallway02lockerKeycodes
-    Scene lockerPuzzle = new Scene("lockerPuzzle", "TEMP_puzzleLocker.png");
+  //hallway02locker_keycodes
+    Scene lockerPuzzle = new Scene("lockerPuzzle", "hallway02.png");
 
     //back to hallway02
     MoveToSceneObject lockerpuzzletohallway02 = new MoveToSceneObject("lockerPuzzleHallway02", 64*xs, 150*ys, 192*xs, 42*ys, true, "downCursor");
@@ -174,16 +180,15 @@ void setup() {
     //Locker
     hallway02.addGameObject(h2LockerPuzzle);
 
-  //hallway02openLocker
-    Scene openLocker = new Scene("openLocker", "TEMP_openLocker.png");
+  //hallway02open_locker
+    Scene openLocker = new Scene("openLocker", "hallway02_lockerOpen.png");
 
     //back to hallway02
     MoveToSceneObject openlockertohallway02 = new MoveToSceneObject("openLockerHallway02", 64*xs, 150*ys, 192*xs, 42*ys, true, "downCursor");
     openLocker.addGameObject(openlockertohallway02);
 
     //key to storage room
-    Collectable storageKey = new Collectable("storageKey", "key.png");
-    CollectableObject storagekeyObject = new CollectableObject("openlocker", 80*xs, 36*ys, 16*xs, 16*xs, true, storageKey, "interactableCursor");
+    CollectableObject storagekeyObject = new CollectableObject("StorageKeyObject", 102*xs, 90*ys, 16*xs, 16*xs, true, storageKey, "interactableCursor");
     openLocker.addGameObject(storagekeyObject);
 
 
