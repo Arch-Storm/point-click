@@ -8,6 +8,7 @@ public int ys;
 
 //init puzzle solved variables
 public boolean debugSolvedPuzzles = false;
+public boolean storageRoomUnlocked = false;
 
 void settings()
 {
@@ -15,7 +16,11 @@ void settings()
   size(1600, 900);
 }
 
-void setup()
+//scuffed but otherwise processing won't be able to use the collectables at all
+Collectable knife = new Collectable("knife", "knife.png");
+Collectable storageKey = new Collectable("storageKeyItem", "key.png");
+
+public void setup()
 {
   frameRate(framerate);
 
@@ -40,27 +45,26 @@ void setup()
 /*------Scenes & room navigation-------*/
 
 //storageRoom
-  Scene storageRoom = new Scene("storageRoom", "storageRoom.jpg" );
+  Scene storageRoom = new Scene("storageRoom", "storageRoom.png" );
 
   //to hallway02 (back)
   MoveToSceneObject storageTohallway02 = new MoveToSceneObject("storageRoom_hallway02", 156*xs, 160*ys, 16*xs, 16*xs, "arrowUp.png", true);
   storageRoom.addGameObject(storageTohallway02);
 
   //TODO add knife to storage room
-  Collectable knife = new Collectable("knife", "TEMP_knife.png");
   CollectableObject knifeObject = new CollectableObject("storage_room", 80*xs, 36*ys, 16*xs, 16*xs, true, knife);
   storageRoom.addGameObject(knifeObject);
 
 
 //barracksRoom
-  Scene barracksRoom = new Scene("barracksRoom", "barracks.jpg" );
+  Scene barracksRoom = new Scene("barracksRoom", "barracks.png" );
 
   //to hallway01 (back)
   MoveToSceneObject barrackstohallway01 = new MoveToSceneObject("barracks_hallway01", 140*xs, 100*ys, 16*xs, 16*xs, "arrowUp.png", true);
   barracksRoom.addGameObject(barrackstohallway01);
 
 //controlroom
-  Scene controlRoom = new Scene("controlRoom", "controlRoom.jpg" );
+  Scene controlRoom = new Scene("controlRoom", "controlRoom.png" );
 
   //to hallway01 (back)
   MoveToSceneObject controltohallway01 = new MoveToSceneObject("controlRoom_hallway01", 10*xs, 90*ys, 16*xs, 16*xs, "arrowUp.png", "hallway01");
@@ -68,7 +72,7 @@ void setup()
 
 
 //hallway01
-  Scene hallway01 = new Scene("hallway01", "hallway01.jpg" );
+  Scene hallway01 = new Scene("hallway01", "hallway01.png" );
 
   //to hallway02
   MoveToSceneObject h1ToHallway02 = new MoveToSceneObject("hallway01_hallway02", 156*xs, 150*ys, 16*xs, 16*xs, "arrowDown.png", "hallway02");
@@ -79,7 +83,7 @@ void setup()
   hallway01.addGameObject(h1tobarracksRoom);
 
   //hallway01_exit_keypad
-    Scene keypadPuzzle = new Scene("keypadPuzzle", "hallway01_closeup.jpg");
+    Scene keypadPuzzle = new Scene("keypadPuzzle", "hallway01_closeup.png");
 
     //hallway01 to keypadPuzzle
     MoveToSceneObject h1keypadPuzzle = new MoveToSceneObject("hallway01_keypadPuzzle", 156*xs, 70*ys, 16*xs, 16*xs, "zoom.png", "keypadPuzzle");
@@ -106,26 +110,21 @@ void setup()
   
 
 //hallway02 
-  Scene hallway02 = new Scene("hallway02", "hallway02.jpg");
+  Scene hallway02 = new Scene("hallway02", "hallway02.png");
 
   //to hallway01
   MoveToSceneObject h2ToHallway01 = new MoveToSceneObject("hallway02_hallway01", 156*xs, 160*ys, 16*xs, 16*xs, "arrowDown.png", "hallway01");
   hallway02.addGameObject(h2ToHallway01);
 
   //toStorageRoom
-  if (debugSolvedPuzzles) {
-    MoveToSceneObject h2ToStorageRoom = new MoveToSceneObject("hallway02_StorageRoom", 215*xs, 90*ys, 16*xs, 16*xs, "arrowRight.png", "storageRoom");
+  if (!storageRoomUnlocked ||debugSolvedPuzzles) {
+    StorageDoorLock h2ToStorageRoom = new StorageDoorLock("hallway02_StorageRoom", 215*xs, 90*ys, 16*xs, 16*xs, "zoom.png", "storageRoom",storageKey);
+    h2ToStorageRoom.setHoverImage("zoomIn.png");
     hallway02.addGameObject(h2ToStorageRoom);
+    //TODO add door locked sound/ dialogue that door is locked.
   }
-  else{
-    //TODO storage key "puzzle"  (need key to open door) otherwise door will be closed.
+  else{ 
   }
-//hallway03 (exit)
-  Scene hallway03 = new Scene("hallway03", "TEMP_ending.png");
-
-  //to hallway 02
-  MoveToSceneObject h3ToHallway02 = new MoveToSceneObject("hallway03_hallway02", 156*xs, 160*ys, 16*xs, 16*xs, "arrowDown.png", "hallway02");
-  hallway03.addGameObject(h3ToHallway02);
 
 //Ending scene
   Scene ending = new Scene("ending", "TEMP_ending.png");
@@ -133,7 +132,7 @@ void setup()
 /*----closeups-----*/
 
   //hallway02locker_keycodes
-    Scene lockerPuzzle = new Scene("lockerPuzzle", "TEMP_puzzleLocker.png");
+    Scene lockerPuzzle = new Scene("lockerPuzzle", "hallway02.png");
 
     //back to hallway02
     MoveToSceneObject lockerpuzzletohallway02 = new MoveToSceneObject("lockerPuzzle_hallway02", 156*xs, 160*ys, 16*xs, 16*xs, "arrowDown.png", true);
@@ -157,15 +156,14 @@ void setup()
     hallway02.addGameObject(h2LockerPuzzle);
 
   //hallway02open_locker
-    Scene openLocker = new Scene("openLocker", "TEMP_openLocker.png");
+    Scene openLocker = new Scene("openLocker", "hallway02_lockerOpen.png");
 
     //back to hallway02
     MoveToSceneObject openlockertohallway02 = new MoveToSceneObject("openLocker_hallway02", 156*xs, 160*ys, 16*xs, 16*xs, "arrowDown.png", "hallway02");
     openLocker.addGameObject(openlockertohallway02);
 
     //key to storage room
-    Collectable storageKey = new Collectable("storageKey", "key.png");
-    CollectableObject storagekeyObject = new CollectableObject("openlocker", 80*xs, 36*ys, 16*xs, 16*xs, true, storageKey);
+    CollectableObject storagekeyObject = new CollectableObject("storageKeyItem", 102*xs, 90*ys, 16*xs, 16*xs, true, storageKey);
     openLocker.addGameObject(storagekeyObject);
 
 
