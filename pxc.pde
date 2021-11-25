@@ -48,7 +48,7 @@ public void setup()
   
   //main menu 
   Scene menu = new Scene("menu", "menu.png");
-  ButtonObject startButton = new ButtonObject("startButton", 3*xs, 135*ys, 32*xs, 22*ys, "Start", "hallway02", "interactableCursor");
+  ButtonObject startButton = new ButtonObject("startButton", 3*xs, 135*ys, 32*xs, 22*ys, "Start", "hallway02", "interactableCursor"); //hallway02
   ButtonObject optionsButton = new ButtonObject("optionsButton", 3*xs, 150*ys, 32*xs, 22*ys, "Options", "options", "interactableCursor");
   ButtonObject exitButton = new ButtonObject("exitButton", 3*xs, 165*ys, 32*xs, 22*ys, "Exit", "exit", "interactableCursor");
   menu.addGameObject(startButton);
@@ -71,7 +71,7 @@ public void setup()
   storageRoom.addGameObject(storageTohallway02);
 
   //TODO add knife to storage room
-  CollectableObject knifeObject = new CollectableObject("storage_room", 80*xs, 36*ys, 16*xs, 16*xs, true, knife, "interactableCursor");
+  CollectableObject knifeObject = new CollectableObject("storage_room", 65*xs, 65*ys, 16*xs, 16*xs, true, knife, "interactableCursor");
   storageRoom.addGameObject(knifeObject);
 
 
@@ -86,7 +86,7 @@ public void setup()
   Scene controlRoom = new Scene("controlRoom", "controlRoom.png" );
 
   //to hallway01 (back)
-  MoveToSceneObject controltohallway01 = new MoveToSceneObject("controlRoom_hallway01", 10*xs, 90*ys, 16*xs, 16*xs, "arrowUp.png", true, "upCursor");
+  MoveToSceneObject controltohallway01 = new MoveToSceneObject("controlRoom_hallway01", xs, 9*ys, 65*xs, 95*xs, "hallway01" , "upCursor");
   controlRoom.addGameObject(controltohallway01);
 
 
@@ -94,7 +94,7 @@ public void setup()
   Scene hallway01 = new Scene("hallway01", "hallway01.png" );
 
   //to hallway02
-  MoveToSceneObject h1ToHallway02 = new MoveToSceneObject("hallway01_hallway02", 64*xs, 150*ys, 192*xs, 42*ys, true, "downCursor");
+  MoveToSceneObject h1ToHallway02 = new MoveToSceneObject("hallway01_hallway02", 64*xs, 150*ys, 192*xs, 42*ys,"hallway", "downCursor");
   hallway01.addGameObject(h1ToHallway02);
 
   //to barracksRoom
@@ -119,10 +119,8 @@ public void setup()
 
   //to Controlroom (needs check)
   if (debugSolvedPuzzles) {
-    MoveToSceneObject h1tocontrolRoom = new MoveToSceneObject("hallway01_controlRoom", 220*xs, 90*ys, 16*xs, 16*xs, "arrowRight.png", "controlRoom", "rightCursor");
+    MoveToSceneObject h1tocontrolRoom = new MoveToSceneObject("hallway01_controlRoom", 205*xs, 35*ys, 50*xs, 80*xs, "controlRoom", "rightCursor");
     hallway01.addGameObject(h1tocontrolRoom);
-  } else {
-    //TODO finger scanner puzzle
   }
   
 
@@ -154,7 +152,7 @@ public void setup()
 /*----closeups-----*/
 
   //hallway02locker_keycodes
-    Scene lockerPuzzle = new Scene("lockerPuzzle", "hallway02.png");
+    Scene lockerPuzzle = new Scene("lockerPuzzle", "TEMP_puzzleLocker.png");
 
     //back to hallway02
     MoveToSceneObject lockerpuzzletohallway02 = new MoveToSceneObject("lockerPuzzle_hallway02", 64*xs, 150*ys, 192*xs, 42*ys, true, "downCursor");
@@ -191,7 +189,7 @@ public void setup()
   //hallway02Door_fingerscanner
     Scene scannerPuzzle = new Scene("scannerPuzzle","TEMP_puzzlescanner.png");
     if(!debugSolvedPuzzles){
-      MoveToSceneObject h1scannerPuzzle = new MoveToSceneObject("hallway01_scannerPuzzle", 204*xs, 44*ys, 48*xs, 80*ys, "scannerPuzzle", "rightCursor");
+      MoveToSceneObject h1scannerPuzzle = new MoveToSceneObject("hallway01_scannerPuzzle", 204*xs, 44*ys, 48*xs, 80*ys, "scannerPuzzle", "interactableCursor");
       hallway01.addGameObject(h1scannerPuzzle);
     }
     //back to hallway01
@@ -201,7 +199,7 @@ public void setup()
   //controlRoom_Documents
     Scene documentPuzzle = new Scene("documentPuzzle","TEMP_documentPuzzle.png");
 
-    MoveToSceneObject cRTodocumentPuzzle = new MoveToSceneObject("controlRoom_documentPuzzle", 240*xs, 150*ys, 16*xs, 16*xs, "zoom.png", "documentPuzzle", "rightCursor");
+    MoveToSceneObject cRTodocumentPuzzle = new MoveToSceneObject("controlRoom_documentPuzzle", 265*xs, 105*ys, 25*xs, 25*xs, "docs.png", "documentPuzzle", "interactableCursor");
     controlRoom.addGameObject(cRTodocumentPuzzle);
 
     //back to control room (BACK)
@@ -213,7 +211,7 @@ public void setup()
   //controlRoom_Computer
     Scene computerScreen = new Scene("computerScreen","TEMP_computerScreen.png");
 
-    MoveToSceneObject cRToComputerScreen = new MoveToSceneObject("controlRoom_computerScreen", 135*xs, 50*ys, 16*xs, 16*xs, "zoom.png", "computerScreen", "interactableCursor");
+    MoveToSceneObject cRToComputerScreen = new MoveToSceneObject("controlRoom_computerScreen", 205*xs, 55*ys, 35*xs, 30*xs, "computerScreen", "interactableCursor");
     controlRoom.addGameObject(cRToComputerScreen);
 
     //back to control room

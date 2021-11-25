@@ -66,7 +66,15 @@ class Scene {
         currentCursor = object.hoverCursor;
       }
     }
-    cursor(cursors.get(currentCursor));
+    try{
+        cursor(cursors.get(currentCursor));
+    }
+    catch(Exception e){
+      currentCursor = "mainCursor";
+      cursor(cursors.get(currentCursor));
+      println(e);
+    }
+    
   }
   
   public void mouseClicked() {

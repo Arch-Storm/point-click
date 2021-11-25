@@ -3,6 +3,9 @@ MoveToSceneObject h2ToStorageRoom = new MoveToSceneObject("hallway02_StorageRoom
 
 /*
     BUG: if the curser is not moved between scenes the oldest StorageDoorLock is used.
+
+
+    Copied over move to scene object because my brain hurts by looking at it.  -merlijn
 */
   
   private String nextSceneIdentifier;
