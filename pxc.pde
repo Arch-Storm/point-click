@@ -11,7 +11,10 @@ public int ys;
 public boolean debugSolvedPuzzles = false;
 public boolean storageRoomUnlocked = false;
 
-public String mainFontFile = "TEMP_FiraSans.ttf";
+public String ticketingFontFile = "Ticketing.ttf";
+public String britannicFontFile = "Britannic.ttf";
+public PFont britannicFont;
+public PFont ticketingFont;
 
 public String[] cursorFiles = {"mainCursor", "interactableCursor", "upCursor", "downCursor", "rightCursor", "leftCursor"};
 public HashMap<String, PImage> cursors = new HashMap<String, PImage>();
@@ -31,8 +34,9 @@ public void setup()
 {
   // Weird workarounds to make the Fonts display correctly after moving to P2D
   textMode(SHAPE);
-  PFont mainFont = createFont(mainFontFile, 12, true);
-  textFont(mainFont);
+  britannicFont = createFont(britannicFontFile, 12, true);
+  ticketingFont = createFont(ticketingFontFile, 12, true);
+  textFont(britannicFont);
 
   // dynamic units
   xs = width / 320;
@@ -169,6 +173,10 @@ public void setup()
     //back to hallway02
     MoveToSceneObject lockerpuzzletohallway02 = new MoveToSceneObject("lockerPuzzleHallway02", 152*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
     lockerPuzzle.addGameObject(lockerpuzzletohallway02);
+
+    //only to change the cursor
+    GameObject cursorChanger = new GameObject("cursorChanger", 115*xs, 20*ys, 90*xs, 44*ys, "interactableCursor");
+    lockerPuzzle.addGameObject(cursorChanger);
 
     //to locker puzzle
     MoveToSceneObject h2LockerPuzzle = new MoveToSceneObject("hallway02LockerPuzzle", 102*xs, 70*ys, 16*xs, 48*ys, "lockerPuzzle", "interactableCursor");
