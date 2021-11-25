@@ -1,7 +1,7 @@
 class Scene {
   private String sceneName;
   private PImage backgroundImage;
-  private ArrayList<GameObject> gameObjects;
+  public ArrayList<GameObject> gameObjects;
   public ArrayList<GameObject> hiddenObjects;
   
   private ArrayList<GameObject> recentlyAddedGameObjects;

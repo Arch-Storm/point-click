@@ -8,10 +8,12 @@ class GameObject {
   private boolean hasImage;
   private boolean hasHoverImage;
   private boolean isBeingDragged;
-  private PImage gameObjectImage;
+  public PImage gameObjectImage;
   private PImage gameObjectImageHover;
   protected boolean mouseIsHovering;
   private String hoverCursor;
+  private boolean isComputer = false;
+  private int computerStartOpacity = 315;
   
   public GameObject(String identifier, int x, int y, int owidth, int oheight, String hoverCursor) {
     this(identifier, x, y, owidth, oheight, "", hoverCursor);
@@ -24,9 +26,10 @@ class GameObject {
     this.owidth = owidth;
     this.oheight = oheight;
     this.hasImage = !gameObjectImageFile.equals("");
-    if(this.hasImage) {
+    if (this.hasImage) {
        this.gameObjectImage = loadImage(gameObjectImageFile);
     }
+    if (gameObjectImageFile == "computerStarting.png") isComputer = true;
     this.hoverCursor = hoverCursor;
     hasHoverImage = false;
     mouseIsHovering = false;
@@ -38,11 +41,20 @@ class GameObject {
   }
   
   public void draw() {
-    if(hasImage) {
-      if(mouseIsHovering && hasHoverImage) {
-        image(gameObjectImageHover, x, y, owidth, oheight);
-      } else {
+    if(!isComputer) {
+      if(hasImage) {
+        if(mouseIsHovering && hasHoverImage) {
+          image(gameObjectImageHover, x, y, owidth, oheight);
+        } else {
+          image(gameObjectImage, x, y, owidth, oheight);
+        }
+      }
+    } else {
+      if (computerStartOpacity > 0) {
+        computerStartOpacity--;
+        tint(255, computerStartOpacity + int(random(-15, 25)));
         image(gameObjectImage, x, y, owidth, oheight);
+        tint(255, 255);
       }
     }
   }

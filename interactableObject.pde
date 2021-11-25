@@ -81,6 +81,11 @@ class InteractableObject extends GameObject {
         Scene previousScene = sceneManager.scenes.get("hallway01");
         previousScene.removeByIndex(3);
         previousScene.addGameObject(previousScene.hiddenObjects.get(0));
+      } else if (acceptedItem == "keyCard") {
+        displayText.displayText("Is it actually starting up?!", "Yes! How is this still functional?!");
+        currentScene.addGameObject(currentScene.hiddenObjects.get(0));
+        currentScene.addGameObject(currentScene.hiddenObjects.get(1));
+        currentScene.removeGameObject(this);
       }
     }
   }

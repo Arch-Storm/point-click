@@ -28,26 +28,26 @@ void settings() {
 
 public void setup()
 {
-  // Weird workarounds to make the Fonts display correctly after moving to P2D
+// Weird workarounds to make the Fonts display correctly after moving to P2D
   textMode(SHAPE);
   britannicFont = createFont(britannicFontFile, 12, true);
   ticketingFont = createFont(ticketingFontFile, 12, true);
   textFont(britannicFont);
 
-  // dynamic units
+// dynamic units
   xs = width / 320;
   ys = height / 180;
 
-  // load cursors
+// load cursors
   for (String file : cursorFiles) {
     PImage img = loadImage(file + ".png");
     cursors.put(file, img);
   }
 
-  //Start AudioManager
+//Start AudioManager
   audioManager.loadSounds();
   
-  //main menu 
+//main menu 
   Scene menu = new Scene("menu", "menu.png");
   ButtonObject startButton = new ButtonObject("startButton", 3*xs, 135*ys, 32*xs, 22*ys, "Start", "hallway02", "interactableCursor");
   ButtonObject optionsButton = new ButtonObject("optionsButton", 3*xs, 150*ys, 32*xs, 22*ys, "Options", "options", "interactableCursor");
@@ -56,11 +56,14 @@ public void setup()
   menu.addGameObject(optionsButton);
   menu.addGameObject(exitButton);
 
-  //options
+//options
   Scene options = new Scene("options", "menu.png");
+  
+
+
   ButtonObject backButton = new ButtonObject("backButton", 3*xs, 165*ys, 32*xs, 22*ys, "Back", "menu", "interactableCursor");
   options.addGameObject(backButton);
-  
+
 
 /*------Scenes & room navigation-------*/
 
@@ -106,6 +109,19 @@ public void setup()
   MoveToSceneObject controltohallway01 = new MoveToSceneObject("controlRoomHallway01", 0, 8*ys, 70*xs, 96*ys, true, "upCursor");
   controlRoom.addGameObject(controltohallway01);
 
+  //to computer
+  MoveToSceneObject cRToComputerScreen = new MoveToSceneObject("controlRoomComputerScreen", 205*xs, 55*ys, 40*xs, 30*ys, "computerScreen", "interactableCursor");
+  controlRoom.addGameObject(cRToComputerScreen);
+
+  //docs
+  Collectable docs = new Collectable("docs", "docs.png", "docs.png");
+  CollectableObject docsObject = new CollectableObject("docsObject", 263*xs, 113*ys, 30*xs, 15*ys, true, docs, "grabDocs", "interactableCursor", "Ok, these are the real deal.", "The intel was correct then...");
+  controlRoom.addGameObject(docsObject);
+
+  //body
+  Collectable keyCard = new Collectable("keyCard", "", "keyCard.png");
+  CollectableObject keyCardObject = new CollectableObject("keyCardObject", 0, 140*ys, 40*xs, 40*ys, true, keyCard, "grabKnife", "interactableCursor", "A Keycard!", "This has to be useful!");
+  controlRoom.addGameObject(keyCardObject);
 
 //hallway01
   Scene hallway01 = new Scene("hallway01", "hallway01.png", "What have I gotten myself into...", "This is ridiculous.");
@@ -126,8 +142,8 @@ public void setup()
     hallway01.addGameObject(h1keypadPuzzle);
 
     //keypad puzzle
-    String correctKeypadCode = "111";
-    KeypadPuzzleObject keypadPuzzleObject = new KeypadPuzzleObject("hallway03KeypadPuzzleObject", 103*xs, 10*ys, 120*xs, 168*ys, correctKeypadCode, "lock.png", "mainCursor");
+    String correctKeypadCode = "374";
+    KeypadPuzzleObject keypadPuzzleObject = new KeypadPuzzleObject("hallway03KeypadPuzzleObject", 103*xs, 10*ys, 120*xs, 168*ys, correctKeypadCode, "lock.png", "lockCorrect.png", "lockWrong.png", "mainCursor");
     keypadPuzzle.addGameObject(keypadPuzzleObject);
 
     //back to hallway01
@@ -137,6 +153,10 @@ public void setup()
   //to Controlroom
   MoveToSceneObject h1tocontrolRoom = new MoveToSceneObject("hallway01ControlRoom", 200*xs, 30*ys, 48*xs, 80*xs, "controlRoom", "rightCursor");
   hallway01.addHiddenObject(h1tocontrolRoom);
+
+  //to ending
+  MoveToSceneObject h1toEnding = new MoveToSceneObject("h1toEnding", 148*xs, 52*ys, 32*xs, 44*ys, "ending", "upCursor", docs);
+  hallway01.addHiddenObject(h1toEnding);
   
 
 //hallway02 
@@ -221,25 +241,24 @@ public void setup()
     InteractableObject scanner = new InteractableObject("scanner", 103*xs, 10*ys, 120*xs, 168*ys, "keypadOff.png", "finger", "mainCursor", "", "");
     scannerPuzzle.addGameObject(scanner);
 
-  //controlRoomDocuments
-    Scene documentPuzzle = new Scene("documentPuzzle","TEMP_documentPuzzle.png");
-
-    MoveToSceneObject cRTodocumentPuzzle = new MoveToSceneObject("controlRoomDocumentPuzzle", 240*xs, 150*ys, 16*xs, 16*xs, "higher.png", "documentPuzzle", "rightCursor");
-    controlRoom.addGameObject(cRTodocumentPuzzle);
-
-    //back to control room (BACK)
-    MoveToSceneObject dPuzzleToControlRoom = new MoveToSceneObject("documentPuzzleControlroom", 152*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
-    documentPuzzle.addGameObject(dPuzzleToControlRoom);
-
   //controlRoomComputer
-    Scene computerScreen = new Scene("computerScreen","TEMP_computerScreen.png");
+    Scene computerScreen = new Scene("computerScreen","computerOff.png");
 
-    MoveToSceneObject cRToComputerScreen = new MoveToSceneObject("controlRoomComputerScreen", 135*xs, 50*ys, 16*xs, 16*xs, "higher.png", "computerScreen", "interactableCursor");
-    controlRoom.addGameObject(cRToComputerScreen);
+    //cardscanner
+    InteractableObject cardScanner = new InteractableObject("cardScanner", 110*xs, 145*ys, 100*xs, 45*ys, "keyCard", "mainCursor", "", "");
+    computerScreen.addGameObject(cardScanner);
 
     //back to control room
     MoveToSceneObject computerScreenToControlRoom = new MoveToSceneObject("computerScreenControlroom", 152*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
     computerScreen.addGameObject(computerScreenToControlRoom);
+
+    //computer start and computer on
+    GameObject computerOn = new GameObject("computerOn", 0, 0, 320*xs, 180*ys, "computerOn.png", "mainCursor");
+    GameObject computerStarting = new GameObject("computerStarting", 0, 0, 320*xs, 180*ys, "computerStarting.png", "mainCursor");
+    computerScreen.addHiddenObject(computerOn);
+    computerScreen.addHiddenObject(computerStarting);
+
+//Last setup functions
 
     displayText.load();
 

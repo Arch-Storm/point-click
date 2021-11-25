@@ -1,15 +1,19 @@
 class KeypadPuzzleObject extends GameObject {
     private String correctKeypadCode;
     private String currentCode = "";
-    private PImage img;
+    private PImage defImage;
+    private PImage correctImage;
+    private PImage wrongImage;
+    private float wrongCounter = 0.0f;
     private KeypadButton[] keypadButtons = new KeypadButton[11];
 
     public KeypadPuzzleObject(String identifier, int x, int y, int owidth, 
-                        int oheight, String correctKeypadCode, String imagePath, String hoverCursor) {
-        super(identifier, x, y, owidth, oheight, hoverCursor);
+                        int oheight, String correctKeypadCode, String imagePath, String correctImage, String wrongImage, String hoverCursor) {
+        super(identifier, x, y, owidth, oheight, imagePath, hoverCursor);
         this.correctKeypadCode = correctKeypadCode;
-        this.img = loadImage(imagePath);
-
+        this.defImage = loadImage(imagePath);
+        this.correctImage = loadImage(correctImage);
+        this.wrongImage = loadImage(wrongImage);
         for (int i = 0; i < this.keypadButtons.length; i++) {
             if (i < 9) {
                 int column = ((i+1) % 3 == 0) ? 3 : (i+1) % 3;
@@ -19,11 +23,6 @@ class KeypadPuzzleObject extends GameObject {
             else if (i == 9) this.keypadButtons[i] = new KeypadButton(true, false, 124*xs, 133*ys, 22*xs, 10*xs); //enter
             else this.keypadButtons[i] = new KeypadButton(false, true, 148*xs, 133*ys, 10*xs, 10*xs); //delete
         }
-    }
-
-    @Override
-    public void draw() {
-        image(img, x, y, owidth, oheight);
     }
 
     @Override
@@ -37,16 +36,26 @@ class KeypadPuzzleObject extends GameObject {
         currentCode += num;
     }
 
+    @Override
+    public void draw() {
+        if (wrongCounter > 0.0f) {
+            wrongCounter -= 1.0f/60.0f;
+            if (!(wrongCounter > 0.0f)) changeImage(defImage);
+        }
+        super.draw();
+    }
+
     public void checkCode() {
         if (currentCode.matches(correctKeypadCode)) {
-            sceneManager.goToPreviousScene(); // remove current scene from stack
-            try {
-                sceneManager.goToScene("ending");
-            } catch(Exception e) { 
-                println(e.getMessage());
-            }
+            changeImage(correctImage);
+            displayText.displayText("Got it!", "Now I can go if I have the Documents.");
+            Scene previousScene = sceneManager.scenes.get("hallway01");
+            previousScene.removeByIndex(2);
+            previousScene.addGameObject(previousScene.hiddenObjects.get(1));
         } else {
             currentCode = "";
+            changeImage(wrongImage);
+            wrongCounter = 1.0f;
         }
     }
 
