@@ -78,4 +78,14 @@ class Scene {
   public String getSceneName() {
     return this.sceneName;
   }
+
+  public void isMouseHovering(Collectable heldItem) {
+    GameObject hoveredObject = null;
+    for(GameObject object : gameObjects) {
+      hoveredObject = (object.isMouseHovering()) ? object : hoveredObject;
+    }
+    if (hoveredObject != null) {
+      hoveredObject.isItemAccepted(heldItem);
+    }
+  }
 }

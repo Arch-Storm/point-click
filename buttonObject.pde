@@ -34,6 +34,9 @@ class ButtonObject extends GameObject {
                 if (nextSceneIdentifier == "exit") {
                     exit();
                 } else {
+                    if (nextSceneIdentifier == "hallway02") {
+                        audioManager.startAmbience();
+                    }
                     try {
                     sceneManager.goToScene(nextSceneIdentifier);
                     } catch(Exception e) { 

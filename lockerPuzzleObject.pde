@@ -44,9 +44,9 @@ class LockerPuzzleObject extends GameObject {
         if (mouseX >= x + 80*xs && mouseX <= x + 120*xs &&
             mouseY >= y - 50*ys && mouseY <= y - 50*ys + 40*xs &&
             currentCode.matches(correctLockerCode)) {
-            sceneManager.scenes.get("hallway02").removeGameObject(this); // remove the MoveToSceneObject for the locker
-            sceneManager.scenes.get("hallway02").addGameObject(sceneManager.scenes.get("hallway02").hiddenObjects.get(0)); // add movetosceneobject from hallway02 to openlocker
+            audioManager.playOnce("openLocker");
             sceneManager.goToPreviousScene(); // "remove" the locker scene from the stack
+            sceneManager.goToPreviousScene(); // "remove" the old hallway02 scene from the stack
             try {
                 sceneManager.goToScene("openLocker");
             } catch(Exception e) { 

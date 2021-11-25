@@ -2,6 +2,7 @@ int framerate = 60;
 
 final SceneManager sceneManager = new SceneManager();
 final InventoryManager inventoryManager = new InventoryManager();
+final AudioManager audioManager = new AudioManager(this);
 
 public int xs;
 public int ys;
@@ -16,8 +17,8 @@ public String[] cursorFiles = {"mainCursor", "interactableCursor", "upCursor", "
 public HashMap<String, PImage> cursors = new HashMap<String, PImage>();
 
 //scuffed but otherwise processing won't be able to use the collectables at all
-Collectable knife = new Collectable("knife", "knife.png");
-Collectable storageKey = new Collectable("storageKeyObject", "key.png");
+public Collectable knife = new Collectable("knife", "knife", "knife.png");
+public Collectable storageKey = new Collectable("storageKeyObject", "key.png","key.png");
 
 void settings() {
   //fullScreen(P2D);
@@ -28,8 +29,6 @@ void settings() {
 
 public void setup()
 {
-  frameRate(framerate);
-
   // Weird workarounds to make the Fonts display correctly after moving to P2D
   textMode(SHAPE);
   PFont mainFont = createFont(mainFontFile, 12, true);
@@ -44,6 +43,9 @@ public void setup()
     PImage img = loadImage(file + ".png");
     cursors.put(file, img);
   }
+
+  //Start AudioManager
+  audioManager.loadSounds();
   
   //main menu 
   Scene menu = new Scene("menu", "menu.png");
@@ -70,28 +72,33 @@ public void setup()
   storageRoom.addGameObject(storageTohallway02);
 
   //TODO add knife to storage room
-  Collectable knife = new Collectable("knife", "boxcutter.png");
-  CollectableObject knifeObject = new CollectableObject("storageRoom", 80*xs, 36*ys, 16*xs, 16*xs, true, knife, "interactableCursor");
+  Collectable knife = new Collectable("knife", "boxcutter.png","boxcutter.png");
+  CollectableObject knifeObject = new CollectableObject("knifeObject", 80*xs, 36*ys, 16*xs, 16*xs, true, knife, "grabKnife", "interactableCursor");
   storageRoom.addGameObject(knifeObject);
 
 
 //barracksRoom
-  Scene barracksRoom = new Scene("barracksRoom", "barracks.png" );
+  Scene barracksRoom = new Scene("barracksRoom", "barracks.png");
 
   //to hallway01 (back)
   MoveToSceneObject barrackstohallway01 = new MoveToSceneObject("barracks_hallway01", 110*xs, 40*ys, 65*xs, 80*xs, true, "upCursor");
   barracksRoom.addGameObject(barrackstohallway01);
 
   //arm
-  Collectable arm = new Collectable("arm", "Hand1.png");
-  CollectableObject armObject = new CollectableObject("barracksRoom", 85*xs, 135*ys, 48*xs, 48*xs, true, arm, "interactableCursor");
-  barracksRoom.addGameObject(armObject);
+  InteractableObject arm = new InteractableObject("arm", 85*xs, 135*ys, 48*xs, 48*xs, "Hand1.png", "knife", "mainCursor");
+  barracksRoom.addGameObject(arm);
+
+  //cut arm
+  Collectable finger = new Collectable("finger", "Hand2.png", "finger.png");
+  GameObject armNoFinger = new GameObject("armNoFinger", 85*xs, 135*ys, 48*xs, 48*xs, "Hand3.png", "mainCursor");
+  CollectableObject fingerObject = new CollectableObject("fingerObject", 85*xs, 135*ys, 48*xs, 48*xs, true, finger, armNoFinger, "", "interactableCursor");
+  barracksRoom.addHiddenObject(fingerObject);
 
 //controlroom
   Scene controlRoom = new Scene("controlRoom", "controlRoom.png" );
 
   //to hallway01 (back)
-  MoveToSceneObject controltohallway01 = new MoveToSceneObject("controlRoomHallway01", 10*xs, 90*ys, 16*xs, 16*xs, "arrowUp.png", true, "upCursor");
+  MoveToSceneObject controltohallway01 = new MoveToSceneObject("controlRoomHallway01", 0, 8*ys, 70*xs, 96*ys, true, "upCursor");
   controlRoom.addGameObject(controltohallway01);
 
 
@@ -122,13 +129,9 @@ public void setup()
     MoveToSceneObject keypadPuzzleToH1 = new MoveToSceneObject("keypadPuzzleHallway01", 64*xs, 150*ys, 192*xs, 42*ys, true, "downCursor");
     keypadPuzzle.addGameObject(keypadPuzzleToH1);
 
-  //to Controlroom (needs check)
-  if (debugSolvedPuzzles) {
-    MoveToSceneObject h1tocontrolRoom = new MoveToSceneObject("hallway01ControlRoom", 220*xs, 90*ys, 16*xs, 16*xs, "arrowRight.png", "controlRoom", "rightCursor");
-    hallway01.addGameObject(h1tocontrolRoom);
-  } else {
-    //TODO finger scanner puzzle
-  }
+  //to Controlroom
+  MoveToSceneObject h1tocontrolRoom = new MoveToSceneObject("hallway01ControlRoom", 200*xs, 30*ys, 48*xs, 80*xs, "controlRoom", "rightCursor");
+  hallway01.addHiddenObject(h1tocontrolRoom);
   
 
 //hallway02 
@@ -138,14 +141,11 @@ public void setup()
   MoveToSceneObject h2ToHallway01 = new MoveToSceneObject("hallway02Hallway01", 136*xs, 46*ys, 48*xs, 52*xs, "hallway01", "upCursor");
   hallway02.addGameObject(h2ToHallway01);
 
-  //toStorageRoom
-  if (!storageRoomUnlocked || debugSolvedPuzzles) {
-    StorageDoorLock h2ToStorageRoom = new StorageDoorLock("hallway02_StorageRoom", 200*xs, 30*ys, 48*xs, 80*xs, "storageRoom", "interactableCursor", storageKey);
-    hallway02.addGameObject(h2ToStorageRoom);
-    //TODO add door locked sound/ dialogue that door is locked.
-  }
-  else{ 
-  }
+  //doorlock
+  InteractableObject doorLock = new InteractableObject("doorLock", 200*xs, 30*ys, 48*xs, 80*xs, "", "storageKeyObject", "interactableCursor");
+  hallway02.addGameObject(doorLock);
+
+
 //hallway03 (exit)
   Scene hallway03 = new Scene("hallway03", "TEMP_ending.png");
 
@@ -183,15 +183,21 @@ public void setup()
   //hallway02open_locker
     Scene openLocker = new Scene("openLocker", "hallway02_lockerOpen.png");
 
-    //back to hallway02
-    MoveToSceneObject openlockertohallway02 = new MoveToSceneObject("openLockerHallway02", 64*xs, 150*ys, 192*xs, 42*ys, true, "downCursor");
-    openLocker.addGameObject(openlockertohallway02);
+    //to hallway01
+    MoveToSceneObject openlockertohallway01 = new MoveToSceneObject("openLockerHallway01", 136*xs, 46*ys, 48*xs, 52*xs, "hallway01", "upCursor");
+    openLocker.addGameObject(openlockertohallway01);
 
     //key to storage room
-    CollectableObject storagekeyObject = new CollectableObject("StorageKeyObject", 102*xs, 90*ys, 16*xs, 16*xs, true, storageKey, "interactableCursor");
+    CollectableObject storagekeyObject = new CollectableObject("StorageKeyObject", 102*xs, 90*ys, 16*xs, 16*xs, true, storageKey, "grabKey", "interactableCursor");
     openLocker.addGameObject(storagekeyObject);
 
+    //toStorageRoom
+    MoveToSceneObject h2ToStorageRoom = new MoveToSceneObject("hallway02StorageRoom", 200*xs, 30*ys, 48*xs, 80*xs, "storageRoom", "rightCursor");
+    openLocker.addHiddenObject(h2ToStorageRoom);
 
+    //doorlock
+    InteractableObject doorLock2 = new InteractableObject("doorLock2", 200*xs, 30*ys, 48*xs, 80*xs, "storageKeyObject", "interactableCursor");
+    openLocker.addGameObject(doorLock2);
 
   //hallway02DoorFingerscanner
     Scene scannerPuzzle = new Scene("scannerPuzzle","TEMP_puzzlescanner.png");
@@ -202,6 +208,10 @@ public void setup()
     //back to hallway01
     MoveToSceneObject scannerPuzzleToHallway01 = new MoveToSceneObject("scannerHallway01", 64*xs, 150*ys, 192*xs, 42*ys, true, "downCursor");
     scannerPuzzle.addGameObject(scannerPuzzleToHallway01);
+
+    //fingerprint scanner puzzle
+    InteractableObject scanner = new InteractableObject("scanner", 103*xs, 10*ys, 120*xs, 168*ys, "finger", "mainCursor");
+    scannerPuzzle.addGameObject(scanner);
 
   //controlRoomDocuments
     Scene documentPuzzle = new Scene("documentPuzzle","TEMP_documentPuzzle.png");
@@ -225,6 +235,11 @@ public void setup()
     MoveToSceneObject computerScreenToControlRoom = new MoveToSceneObject("computerScreenControlroom", 64*xs, 150*ys, 192*xs, 42*ys, true, "downCursor");
     computerScreen.addGameObject(computerScreenToControlRoom);
     //TODO button to unlock exit 
+
+    inventoryManager.setValues();
+
+    // Apparently it's better to have the frameRate method last in setup
+    frameRate(framerate);
 }
 
 void draw()
@@ -233,6 +248,9 @@ void draw()
   sceneManager.getCurrentScene().updateScene();
   inventoryManager.clearMarkedForDeathCollectables();
   inventoryManager.draw();
+
+  //random Ambience sounds
+  audioManager.randomAmbience();
 }
 
 void mouseMoved() {
@@ -241,5 +259,16 @@ void mouseMoved() {
 
 void mouseClicked() {
   sceneManager.getCurrentScene().mouseClicked();
-  inventoryManager.mouseClicked();
+}
+
+void mousePressed() {
+  inventoryManager.mousePressed();
+}
+
+void mouseDragged() {
+  inventoryManager.mouseDragged();
+}
+
+void mouseReleased() {
+  inventoryManager.mouseReleased();
 }

@@ -7,6 +7,7 @@ class MoveToSceneObject extends GameObject {
   
   private String nextSceneIdentifier;
   private boolean moveBack;
+  private String moveSound;
   
   public MoveToSceneObject(String identifier, int x, int y, int owidth, int oheight, boolean moveBack, String hoverCursor) {
     this(identifier, x, y, owidth, oheight, "", moveBack, hoverCursor);

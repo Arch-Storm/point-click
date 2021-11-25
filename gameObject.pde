@@ -60,6 +60,12 @@ class GameObject {
   public String getIdentifier() {
     return this.identifier;
   }
+
+  public boolean isMouseHovering() {
+    return false;
+  }
+
+  public void isItemAccepted(Collectable draggedItem) { }
   
   @Override 
   public boolean equals(Object obj) { 
