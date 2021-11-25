@@ -5,26 +5,27 @@ class LockerPuzzleObject extends GameObject {
     private LockerPuzzleArrow[] lockerPuzzleArrows = new LockerPuzzleArrow[6];
 
     public LockerPuzzleObject(String identifier, int x, int y, int owidth, 
-                        int oheight, String correctLockerCode, String hoverCursor) {
-        super(identifier, x, y, owidth, oheight, hoverCursor);
+                        int oheight, String imgFile, String correctLockerCode, String hoverCursor) {
+        super(identifier, x, y, owidth, oheight, imgFile, hoverCursor);
         this.correctLockerCode = correctLockerCode;
 
-        this.lockerPuzzleArrows[0] = new LockerPuzzleArrow(true, 0, 95*xs, 40*ys, 40*xs, 40*xs);
-        this.lockerPuzzleArrows[1] = new LockerPuzzleArrow(true, 1, 140*xs, 40*ys, 40*xs, 40*xs);
-        this.lockerPuzzleArrows[2] = new LockerPuzzleArrow(true, 2, 185*xs, 40*ys, 40*xs, 40*xs);
-        this.lockerPuzzleArrows[3] = new LockerPuzzleArrow(false, 0, 95*xs, 120*ys, 40*xs, 40*xs);
-        this.lockerPuzzleArrows[4] = new LockerPuzzleArrow(false, 1, 140*xs, 120*ys, 40*xs, 40*xs);
-        this.lockerPuzzleArrows[5] = new LockerPuzzleArrow(false, 2, 185*xs, 120*ys, 40*xs, 40*xs);
+        this.lockerPuzzleArrows[0] = new LockerPuzzleArrow(true, 0, 127*xs, 74*ys, 20*xs, 20*xs);
+        this.lockerPuzzleArrows[1] = new LockerPuzzleArrow(true, 1, 150*xs, 74*ys, 20*xs, 20*xs);
+        this.lockerPuzzleArrows[2] = new LockerPuzzleArrow(true, 2, 173*xs, 74*ys, 20*xs, 20*xs);
+        this.lockerPuzzleArrows[3] = new LockerPuzzleArrow(false, 0, 127*xs, 110*ys, 20*xs, 20*xs);
+        this.lockerPuzzleArrows[4] = new LockerPuzzleArrow(false, 1, 150*xs, 110*ys, 20*xs, 20*xs);
+        this.lockerPuzzleArrows[5] = new LockerPuzzleArrow(false, 2, 173*xs, 110*ys, 20*xs, 20*xs);
     }
 
     @Override
     public void draw() {
-        textSize(90*ys);
+        super.draw();
+
+        textSize(oheight / 3);
         textAlign(CENTER);
-        text(currentCode, x, y);
+        text(currentCode, x + owidth / 2, y + (int)(oheight * 0.8f));
 
         for (LockerPuzzleArrow arrow : lockerPuzzleArrows) arrow.draw();
-        image(checkMark, x + 80*xs, y - 50*ys, 40*xs, 40*xs);
     }
 
     @Override
@@ -41,8 +42,8 @@ class LockerPuzzleObject extends GameObject {
         for (LockerPuzzleArrow arrow : lockerPuzzleArrows) {
             currentCode = arrow.mouseClicked(currentCode, x, y, owidth, oheight);
         }
-        if (mouseX >= x + 80*xs && mouseX <= x + 120*xs &&
-            mouseY >= y - 50*ys && mouseY <= y - 50*ys + 40*xs &&
+        if (mouseX >= x + owidth / 2 - 20*xs && mouseX <= x + owidth / 2 + 20*xs &&
+            mouseY >= y && mouseY <= y + 60*ys &&
             currentCode.matches(correctLockerCode)) {
             audioManager.playOnce("openLocker");
             sceneManager.goToPreviousScene(); // "remove" the locker scene from the stack

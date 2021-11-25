@@ -23,7 +23,7 @@ class GameObject {
     this.y = y;
     this.owidth = owidth;
     this.oheight = oheight;
-    this.hasImage = !gameObjectImageFile.equals(""); 
+    this.hasImage = !gameObjectImageFile.equals("");
     if(this.hasImage) {
        this.gameObjectImage = loadImage(gameObjectImageFile);
     }
@@ -66,6 +66,10 @@ class GameObject {
   }
 
   public void isItemAccepted(Collectable draggedItem) { }
+
+  public void changeImage(PImage replaceImage) {
+    this.gameObjectImage = replaceImage;
+  }
   
   @Override 
   public boolean equals(Object obj) { 

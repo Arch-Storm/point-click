@@ -49,9 +49,9 @@ class AudioManager {
                 else {
                     counter = 1.0f;
 
-                    // Play a sound roughly every 10 seconds
-                    int i = int(random(11));
-                    if (i == 10) {
+                    // Play a sound roughly every 8 seconds
+                    int i = int(random(9)); // only returns 0-8
+                    if (i == 8) {
                         int r = int(random(ambienceSounds.length));
                         sounds.get(ambienceSounds[r]).amp(0.2);
                         sounds.get(ambienceSounds[r]).play();
