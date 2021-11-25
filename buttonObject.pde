@@ -27,19 +27,23 @@ class ButtonObject extends GameObject {
     @Override
     public void mouseClicked() {
         if(mouseIsHovering) {
-        if(moveBack) {
-            sceneManager.goToPreviousScene();
-        } else {
-            if (nextSceneIdentifier == "exit") {
-                exit();
+            cursor(cursors.get("mainCursor"));
+            if(moveBack) {
+                sceneManager.goToPreviousScene();
             } else {
-                try {
-                sceneManager.goToScene(nextSceneIdentifier);
-                } catch(Exception e) { 
-                println(e.getMessage());
+                if (nextSceneIdentifier == "exit") {
+                    exit();
+                } else {
+                    if (nextSceneIdentifier == "hallway02") {
+                        audioManager.startAmbience();
+                    }
+                    try {
+                    sceneManager.goToScene(nextSceneIdentifier);
+                    } catch(Exception e) { 
+                    println(e.getMessage());
+                    }
                 }
             }
-        }
         }
     }
 

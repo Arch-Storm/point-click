@@ -7,6 +7,7 @@ class GameObject {
   private boolean isDraggable;
   private boolean hasImage;
   private boolean hasHoverImage;
+  private boolean isBeingDragged;
   private PImage gameObjectImage;
   private PImage gameObjectImageHover;
   protected boolean mouseIsHovering;
@@ -59,6 +60,12 @@ class GameObject {
   public String getIdentifier() {
     return this.identifier;
   }
+
+  public boolean isMouseHovering() {
+    return false;
+  }
+
+  public void isItemAccepted(Collectable draggedItem) { }
   
   @Override 
   public boolean equals(Object obj) { 

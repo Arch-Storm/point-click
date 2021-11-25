@@ -4,17 +4,19 @@ class CollectableObject extends GameObject {
   private GameObject replaceWith;
   private boolean willReplaceByAnotherGameObject;
   private boolean isDraggable;
+  private String collectionSound;
   
   public CollectableObject(String identifier, int x, int y, int owidth, 
-                           int oheight, boolean isDraggable, Collectable collectable, String hoverCursor) {
-    this(identifier, x, y, owidth, oheight, isDraggable, collectable, null, hoverCursor);
+                           int oheight, boolean isDraggable, Collectable collectable, String collectionSound, String hoverCursor) {
+    this(identifier, x, y, owidth, oheight, isDraggable, collectable, null, collectionSound, hoverCursor);
   }
   
   public CollectableObject(String identifier, int x, int y, int owidth, 
-                           int oheight, boolean isDraggable, Collectable collectable, GameObject replaceWith, String hoverCursor) {
+                           int oheight, boolean isDraggable, Collectable collectable, GameObject replaceWith, String collectionSound, String hoverCursor) {
     super(identifier, x, y, owidth, oheight, collectable.getGameObjectImageFile(), hoverCursor);
     this.isDraggable = isDraggable;
     this.collectable = collectable;
+    this.collectionSound = collectionSound;
     if(replaceWith != null) {
       this.replaceWith = replaceWith;
       this.willReplaceByAnotherGameObject = true;
@@ -47,6 +49,8 @@ class CollectableObject extends GameObject {
   @Override
   public void mouseClicked() {
     if(mouseIsHovering) {
+      cursor(cursors.get("mainCursor"));
+      audioManager.playOnce(collectionSound);
       inventoryManager.addCollectable(collectable);
       sceneManager.getCurrentScene().removeGameObject(this);
       if(willReplaceByAnotherGameObject) {

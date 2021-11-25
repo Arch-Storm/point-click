@@ -1,6 +1,8 @@
 class InventoryManager {
   private ArrayList<Collectable> collectables;
   private ArrayList<Collectable> markedForDeathCollectables;
+  private int x;
+  private int y;
   
   public InventoryManager() {
      collectables = new ArrayList<Collectable>();
@@ -9,6 +11,7 @@ class InventoryManager {
   
   public void addCollectable(Collectable collectable) {
     collectables.add(collectable);
+    collectable.setPos(collectables.indexOf(collectable));
   }
   
   public void removeCollectable(Collectable collectable) {
@@ -28,13 +31,37 @@ class InventoryManager {
     }
   }
 
+  public void setValues() {
+    x = (int)(width*0.99)-width/20;
+    y = (int)(height * 0.2);
+  }
+
+  public void mousePressed() {
+    if (mouseX >= x && mouseX <= x + width / 20 &&
+        mouseY >= y && mouseY <= y + (int)height * 0.9) {
+          for (Collectable collectable : collectables) {
+            collectable.mousePressed();
+          }
+      }
+  }
+
+  public void mouseDragged() {
+    for (Collectable collectable : collectables) {
+      collectable.mouseDragged();
+    }
+  }
+
+  public void mouseReleased() {
+    for (Collectable collectable : collectables) {
+      collectable.mouseReleased();
+      collectable.setPos(collectables.indexOf(collectable));
+    }
+  }
+
   public void draw() {
     if (collectables.size() > 0) {
       for (int i = 0; i < collectables.size(); i++) {
-        String imgFile = collectables.get(i).getGameObjectImageFile();
-        PImage img = loadImage(imgFile);
-        image(img, (int)(width*0.99)-width/20, (int)(height * 0.2) + i * height / 10, width/20, width/20);
-        noTint();
+        collectables.get(i).drawInventory();
       }
     }
   }
