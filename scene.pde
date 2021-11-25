@@ -8,14 +8,27 @@ class Scene {
   private ArrayList<GameObject> markedForDeathGameObjects;
 
   private String currentCursor = "";
-  
+
+  private String text1;
+  private String text2;
+  private boolean textSeen;
+
   public Scene(String sceneName, String backgroundImageFile) {
+    this(sceneName, backgroundImageFile, "", "");
+  }
+  
+  public Scene(String sceneName, String backgroundImageFile, String text1, String text2) {
     this.sceneName = sceneName;
     this.backgroundImage = loadImage(backgroundImageFile);
     gameObjects = new ArrayList<GameObject>();
     hiddenObjects = new ArrayList<GameObject>();
     markedForDeathGameObjects = new ArrayList<GameObject>();
     recentlyAddedGameObjects = new ArrayList<GameObject>();
+    if (text1 == "" && text2 == "") textSeen = true;
+    else {
+      this.text1 = text1;
+      this.text2 = text2;
+    }
     //added this so that it automatically adds a new scene to the scenemanager
     sceneManager.addScene(this);
   }
@@ -52,6 +65,10 @@ class Scene {
   }
   
   public void draw(int wwidth, int wheight) {
+    if (!textSeen && !textDisplayed) {
+      displayText.displayText(text1, text2);
+      textSeen = true;
+    }
     image(backgroundImage, 0, 0, wwidth, wheight);
     for(GameObject object : gameObjects) {
       object.draw();

@@ -44,10 +44,10 @@ class Collectable {
   }
 
   public void setPos(int i) {
-    this.x = (int)(width*0.99)-width/20;
+    this.x = (int)(width*0.99) - width / 20;
     this.y = (int)(height * 0.2) + i * height / 10;
-    this.owidth = width/20;
-    this.oheight = width/20;
+    this.owidth = width / 20;
+    this.oheight = width / 20;
   }
 
   public void draw() {
@@ -58,6 +58,22 @@ class Collectable {
   public void drawInventory() {
     PImage img = loadImage(inventoryImageFile);
     image(img, x, y, owidth, oheight);
+  }
+
+  public void mouseClicked(int i) {
+    if (mouseX >= x && mouseX <= x + owidth &&
+        mouseY >= y && mouseY <= y + oheight) {
+      if (!zoomed) {
+        this.x = 240*xs;
+        this.y = 50*ys;
+        this.owidth = 80*xs;
+        this.oheight = 80*ys;
+        zoomed ^= true;
+      } else {
+        setPos(i);
+        zoomed ^= true;
+      }
+    }
   }
 
   public void mousePressed() {

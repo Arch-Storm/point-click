@@ -6,6 +6,7 @@ class AudioManager {
     private PApplet sketch;
     private String[] soundNames = {"ambience", "cuttingFinger", "grabDocs", "grabKey", "grabKnife", "metalHits", "openDoor",
                                    "openLocker", "screech", "singleHitEcho", "singleHitMetal", "countdown"};
+
     private String[] ambienceSounds = {"metalHits", "screech", "singleHitEcho", "singleHitMetal"};
     private float counter = 1.0f;
     private boolean ambienceStarted;

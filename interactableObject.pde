@@ -2,22 +2,35 @@ class InteractableObject extends GameObject {
 
   private String acceptedItem;
   private PImage replaceImage;
+  private boolean textSeen;
+  private String text1;
+  private String text2;
   
   public InteractableObject(String identifier, int x, int y, int owidth, 
-                           int oheight, String acceptedItem, String hoverCursor) {
+                           int oheight, String acceptedItem, String hoverCursor, String text1, String text2) {
     super(identifier, x, y, owidth, oheight, hoverCursor);
     this.acceptedItem = acceptedItem;
     if (acceptedItem == "finger") {
       replaceImage = loadImage("keypadOn.png");
     }
+    if (text1 == "" && text2 == "") textSeen = true;
+    else {
+      this.text1 = text1;
+      this.text2 = text2;
+    }
   }
 
   public InteractableObject(String identifier, int x, int y, int owidth, 
-                           int oheight, String imageFile, String acceptedItem, String hoverCursor) {
+                           int oheight, String imageFile, String acceptedItem, String hoverCursor, String text1, String text2) {
     super(identifier, x, y, owidth, oheight, imageFile, hoverCursor);
     this.acceptedItem = acceptedItem;
     if (acceptedItem == "finger") {
       replaceImage = loadImage("keypadOn.png");
+    }
+    if (text1 == "" && text2 == "") textSeen = true;
+    else {
+      this.text1 = text1;
+      this.text2 = text2;
     }
   }
   
@@ -37,20 +50,34 @@ class InteractableObject extends GameObject {
   }
 
   @Override
+  public void mouseClicked() {
+    if (mouseX >= x && mouseX <= x + owidth &&
+        mouseY >= y && mouseY <= y + oheight) {
+      if (!textSeen && !textDisplayed) {
+        displayText.displayText(text1, text2);
+        textSeen = true;
+      }
+    }
+  }
+
+  @Override
   public void isItemAccepted(Collectable heldItem) {
     if (acceptedItem == heldItem.name) {
       Scene currentScene = sceneManager.getCurrentScene();
       inventoryManager.removeCollectable(heldItem);
       if (acceptedItem == "storageKeyObject") {
         audioManager.playOnce("openDoor");
+        displayText.displayText("Great!", "The key worked.");
         currentScene.addGameObject(currentScene.hiddenObjects.get(0));
         currentScene.removeGameObject(this);
       } else if (acceptedItem == "knife") {
         audioManager.playOnce("cuttingFinger");
+        displayText.displayText("Can't believe I'm actually doing", "this for my job. Eughhh");
         currentScene.addGameObject(currentScene.hiddenObjects.get(0));
         currentScene.removeGameObject(this);
       } else if (acceptedItem == "finger") {
         changeImage(replaceImage);
+        displayText.displayText("Thank god...", "I actually got it open like this.");
         Scene previousScene = sceneManager.scenes.get("hallway01");
         previousScene.removeByIndex(3);
         previousScene.addGameObject(previousScene.hiddenObjects.get(0));

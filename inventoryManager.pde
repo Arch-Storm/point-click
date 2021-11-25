@@ -32,17 +32,23 @@ class InventoryManager {
   }
 
   public void setValues() {
-    x = (int)(width*0.99)-width/20;
-    y = (int)(height * 0.2);
+    x = 303*xs;
+    y = 36*ys;
+  }
+  
+  public void mouseClicked() {
+    for (Collectable collectable : collectables) {
+      collectable.mouseClicked(collectables.indexOf(collectable));
+    }
   }
 
   public void mousePressed() {
-    if (mouseX >= x && mouseX <= x + width / 20 &&
-        mouseY >= y && mouseY <= y + (int)height * 0.9) {
-          for (Collectable collectable : collectables) {
-            collectable.mousePressed();
-          }
+    if (mouseX >= x && mouseX <= x + 16*xs &&
+        mouseY >= y && mouseY <= y + 162*ys) {
+      for (Collectable collectable : collectables) {
+        collectable.mousePressed();
       }
+    }
   }
 
   public void mouseDragged() {

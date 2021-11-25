@@ -14,9 +14,14 @@ public PFont ticketingFont;
 public String[] cursorFiles = {"mainCursor", "interactableCursor", "upCursor", "downCursor", "rightCursor", "leftCursor"};
 public HashMap<String, PImage> cursors = new HashMap<String, PImage>();
 
+public boolean zoomed = false;
+
+final DisplayText displayText = new DisplayText();
+public boolean textDisplayed = false;
+
 void settings() {
   //fullScreen(P2D);
-  size(1600, 900, P2D);
+  size(1920, 1080, P2D);
 
   smooth(8);
 }
@@ -60,7 +65,7 @@ public void setup()
 /*------Scenes & room navigation-------*/
 
 //storageRoom
-  Scene storageRoom = new Scene("storageRoom", "storageRoom.png" );
+  Scene storageRoom = new Scene("storageRoom", "storageRoom.png", "Let's hope it was worth", "finding the key...");
 
   //to hallway02 (back)
   MoveToSceneObject storageTohallway02 = new MoveToSceneObject("storageRoom_hallway02", 240*xs, 40*ys, 180*xs, 180*xs, true, "rightCursor");
@@ -68,12 +73,12 @@ public void setup()
 
   //knife 
   Collectable knife = new Collectable("knife", "boxcutter.png","boxcutter.png");
-  CollectableObject knifeObject = new CollectableObject("knifeObject", 52*xs, 74*ys, 16*xs, 10*xs, true, knife, "grabKnife", "interactableCursor");
+  CollectableObject knifeObject = new CollectableObject("knifeObject", 52*xs, 74*ys, 16*xs, 10*xs, true, knife, "grabKnife", "interactableCursor", "This could come in handy", "in the future...");
   storageRoom.addGameObject(knifeObject);
 
 
 //barracksRoom
-  Scene barracksRoom = new Scene("barracksRoom", "barracks.png");
+  Scene barracksRoom = new Scene("barracksRoom", "barracks.png", "God, it smells awful in here!", "Did people really sleep in here?");
 
   //to hallway01 (back)
   MoveToSceneObject barrackstohallway01 = new MoveToSceneObject("barracks_hallway01", 110*xs, 40*ys, 65*xs, 80*xs, true, "upCursor");
@@ -81,21 +86,21 @@ public void setup()
   
   //sticky note
   Collectable postItNote = new Collectable("postItNote", "Postitcode.png");
-  CollectableObject postItNoteObject = new CollectableObject("postItNoteObject", 237*xs,45*xs,32*xs,32*xs, true, postItNote,"", "interactableCursor");
+  CollectableObject postItNoteObject = new CollectableObject("postItNoteObject", 237*xs,45*xs,32*xs,32*xs, true, postItNote,"", "interactableCursor", "A code?", "I should be able to use this somewhere.");
   barracksRoom.addGameObject(postItNoteObject);
 
   //arm
-  InteractableObject arm = new InteractableObject("arm", 85*xs, 135*ys, 48*xs, 48*xs, "Hand1.png", "knife", "mainCursor");
+  InteractableObject arm = new InteractableObject("arm", 85*xs, 135*ys, 48*xs, 48*xs, "Hand1.png", "knife", "mainCursor", "Why would I touch this?!", "I'm not going near this!");
   barracksRoom.addGameObject(arm);
 
   //cut arm
   Collectable finger = new Collectable("finger", "Hand2.png", "finger.png");
   GameObject armNoFinger = new GameObject("armNoFinger", 85*xs, 135*ys, 48*xs, 40*xs, "Hand3.png", "mainCursor");
-  CollectableObject fingerObject = new CollectableObject("fingerObject", 85*xs, 135*ys, 48*xs, 40*xs, true, finger, armNoFinger, "", "interactableCursor");
+  CollectableObject fingerObject = new CollectableObject("fingerObject", 85*xs, 135*ys, 48*xs, 40*xs, true, finger, armNoFinger, "", "interactableCursor", "I don't want to take this", "but i guess I'll have to...");
   barracksRoom.addHiddenObject(fingerObject);
 
 //controlroom
-  Scene controlRoom = new Scene("controlRoom", "controlRoom.png");
+  Scene controlRoom = new Scene("controlRoom", "controlRoom.png", "Jesus, whats this... a body?!", "Must have been rotting here for years.");
 
   //to hallway01 (back)
   MoveToSceneObject controltohallway01 = new MoveToSceneObject("controlRoomHallway01", 0, 8*ys, 70*xs, 96*ys, true, "upCursor");
@@ -103,7 +108,7 @@ public void setup()
 
 
 //hallway01
-  Scene hallway01 = new Scene("hallway01", "hallway01.png" );
+  Scene hallway01 = new Scene("hallway01", "hallway01.png", "What have I gotten myself into...", "This is ridiculous.");
 
   //to hallway02
   MoveToSceneObject h1ToHallway02 = new MoveToSceneObject("hallway01Hallway02", 152*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
@@ -114,7 +119,7 @@ public void setup()
   hallway01.addGameObject(h1tobarracksRoom);
 
   //hallway01_exit_keypad
-    Scene keypadPuzzle = new Scene("keypadPuzzle", "keypadBackground.png");
+    Scene keypadPuzzle = new Scene("keypadPuzzle", "keypadBackground.png", "Guess I'll have to find a code", "to get out of here.");
 
     //hallway01 to keypadPuzzle
     MoveToSceneObject h1keypadPuzzle = new MoveToSceneObject("hallway01KeypadPuzzle", 148*xs, 52*ys, 32*xs, 44*ys, "keypadPuzzle", "upCursor");
@@ -135,19 +140,19 @@ public void setup()
   
 
 //hallway02 
-  Scene hallway02 = new Scene("hallway02", "hallway02.png");
+  Scene hallway02 = new Scene("hallway02", "hallway02.png", "Let's get this over with quick.", "Don't wanna stay in here for long.");
 
   //to hallway01
   MoveToSceneObject h2ToHallway01 = new MoveToSceneObject("hallway02Hallway01", 136*xs, 46*ys, 48*xs, 52*xs, "hallway01", "upCursor");
   hallway02.addGameObject(h2ToHallway01);
 
   //doorlock
-  InteractableObject doorLock = new InteractableObject("doorLock", 200*xs, 30*ys, 48*xs, 80*xs, "", "storageKeyObject", "interactableCursor");
+  InteractableObject doorLock = new InteractableObject("doorLock", 200*xs, 30*ys, 48*xs, 80*xs, "", "storageKeyObject", "interactableCursor", "The door is locked...", "Maybe I can find a key somewhere.");
   hallway02.addGameObject(doorLock);
 
 
 //hallway03 (exit)
-  Scene hallway03 = new Scene("hallway03", "TEMP_ending.png");
+  Scene hallway03 = new Scene("hallway03", "TEMP_ending.png", "what", "what");
 
   //to hallway 02
   MoveToSceneObject h3ToHallway02 = new MoveToSceneObject("hallway03Hallway02", 152*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
@@ -193,7 +198,7 @@ public void setup()
 
     //key to storage room
     Collectable storageKey = new Collectable("storageKeyObject", "keyInLocker.png","key.png");
-    CollectableObject storagekeyObject = new CollectableObject("StorageKeyObject", 96*xs + 1, 96*ys, 16*xs, 6*xs, true, storageKey, "grabKey", "interactableCursor");
+    CollectableObject storagekeyObject = new CollectableObject("StorageKeyObject", 96*xs + 1, 96*ys, 16*xs, 6*xs, true, storageKey, "grabKey", "interactableCursor", "Perfect!", "I can get one of the doors open with this.");
     openLocker.addGameObject(storagekeyObject);
 
     //toStorageRoom
@@ -201,7 +206,7 @@ public void setup()
     openLocker.addHiddenObject(h2ToStorageRoom);
 
     //doorlock
-    InteractableObject doorLock2 = new InteractableObject("doorLock2", 200*xs, 30*ys, 48*xs, 80*xs, "storageKeyObject", "interactableCursor");
+    InteractableObject doorLock2 = new InteractableObject("doorLock2", 200*xs, 30*ys, 48*xs, 80*xs, "storageKeyObject", "interactableCursor", "The door is locked...", "Maybe I can find a key somewhere.");
     openLocker.addGameObject(doorLock2);
 
   //hallway02DoorFingerscanner
@@ -213,7 +218,7 @@ public void setup()
     scannerPuzzle.addGameObject(scannerPuzzleToHallway01);
 
     //fingerprint scanner puzzle
-    InteractableObject scanner = new InteractableObject("scanner", 103*xs, 10*ys, 120*xs, 168*ys, "keypadOff.png", "finger", "mainCursor");
+    InteractableObject scanner = new InteractableObject("scanner", 103*xs, 10*ys, 120*xs, 168*ys, "keypadOff.png", "finger", "mainCursor", "", "");
     scannerPuzzle.addGameObject(scanner);
 
   //controlRoomDocuments
@@ -236,6 +241,8 @@ public void setup()
     MoveToSceneObject computerScreenToControlRoom = new MoveToSceneObject("computerScreenControlroom", 152*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
     computerScreen.addGameObject(computerScreenToControlRoom);
 
+    displayText.load();
+
     inventoryManager.setValues();
     // Apparently it's better to have the frameRate method last in setup
     frameRate(framerate);
@@ -250,6 +257,8 @@ void draw()
 
   //random Ambience sounds
   audioManager.randomAmbience();
+
+  if (textDisplayed) displayText.drawText();
 }
 
 void mouseMoved() {
@@ -257,17 +266,18 @@ void mouseMoved() {
 }
 
 void mouseClicked() {
-  sceneManager.getCurrentScene().mouseClicked();
+  if (!zoomed) sceneManager.getCurrentScene().mouseClicked();
+  inventoryManager.mouseClicked();
 }
 
 void mousePressed() {
-  inventoryManager.mousePressed();
+  if (!zoomed) inventoryManager.mousePressed();
 }
 
 void mouseDragged() {
-  inventoryManager.mouseDragged();
+  if (!zoomed) inventoryManager.mouseDragged();
 }
 
 void mouseReleased() {
-  inventoryManager.mouseReleased();
+  if (!zoomed) inventoryManager.mouseReleased();
 }
