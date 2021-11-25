@@ -1,24 +1,15 @@
-int framerate = 60;
-
 final SceneManager sceneManager = new SceneManager();
 final InventoryManager inventoryManager = new InventoryManager();
 final AudioManager audioManager = new AudioManager(this);
 
 public int xs;
 public int ys;
-
-//init puzzle solved variables
-public boolean debugSolvedPuzzles = false;
-public boolean storageRoomUnlocked = false;
+int framerate = 60;
 
 public String mainFontFile = "TEMP_FiraSans.ttf";
 
 public String[] cursorFiles = {"mainCursor", "interactableCursor", "upCursor", "downCursor", "rightCursor", "leftCursor"};
 public HashMap<String, PImage> cursors = new HashMap<String, PImage>();
-
-//scuffed but otherwise processing won't be able to use the collectables at all
-public Collectable knife = new Collectable("knife", "knife", "knife.png");
-public Collectable storageKey = new Collectable("storageKeyObject", "keyInLocker.png","key.png");
 
 void settings() {
   //fullScreen(P2D);
@@ -71,7 +62,7 @@ public void setup()
   MoveToSceneObject storageTohallway02 = new MoveToSceneObject("storageRoom_hallway02", 240*xs, 40*ys, 180*xs, 180*xs, true, "rightCursor");
   storageRoom.addGameObject(storageTohallway02);
 
-  //TODO add knife to storage room
+  //knife 
   Collectable knife = new Collectable("knife", "boxcutter.png","boxcutter.png");
   CollectableObject knifeObject = new CollectableObject("knifeObject", 52*xs, 74*ys, 16*xs, 10*xs, true, knife, "grabKnife", "interactableCursor");
   storageRoom.addGameObject(knifeObject);
@@ -83,6 +74,11 @@ public void setup()
   //to hallway01 (back)
   MoveToSceneObject barrackstohallway01 = new MoveToSceneObject("barracks_hallway01", 110*xs, 40*ys, 65*xs, 80*xs, true, "upCursor");
   barracksRoom.addGameObject(barrackstohallway01);
+  
+  //sticky note
+  Collectable postItNote = new Collectable("postItNote", "Postitcode.png");
+  CollectableObject postItNoteObject = new CollectableObject("postItNoteObject", 237*xs,45*xs,32*xs,32*xs, true, postItNote,"", "interactableCursor");
+  barracksRoom.addGameObject(postItNoteObject);
 
   //arm
   InteractableObject arm = new InteractableObject("arm", 85*xs, 135*ys, 48*xs, 48*xs, "Hand1.png", "knife", "mainCursor");
@@ -162,7 +158,7 @@ public void setup()
     Scene lockerPuzzle = new Scene("lockerPuzzle", "lockerBackground.png");
 
     //locker puzzle code 
-    String correctLockerCode = "123";
+    String correctLockerCode = "053";
     LockerPuzzleObject lockerPuzzleObject = new LockerPuzzleObject("hallway02LockerPuzzleObject", 100*xs, 20*ys, 120*xs, 120*ys, "locker.png", correctLockerCode, "mainCursor");
     lockerPuzzle.addGameObject(lockerPuzzleObject);
 
@@ -188,6 +184,7 @@ public void setup()
     openLocker.addGameObject(openlockertohallway01);
 
     //key to storage room
+    Collectable storageKey = new Collectable("storageKeyObject", "keyInLocker.png","key.png");
     CollectableObject storagekeyObject = new CollectableObject("StorageKeyObject", 96*xs + 1, 96*ys, 16*xs, 6*xs, true, storageKey, "grabKey", "interactableCursor");
     openLocker.addGameObject(storagekeyObject);
 
@@ -200,11 +197,9 @@ public void setup()
     openLocker.addGameObject(doorLock2);
 
   //hallway02DoorFingerscanner
-    Scene scannerPuzzle = new Scene("scannerPuzzle","keypadBackground.png");
-    if(!debugSolvedPuzzles){
-      MoveToSceneObject h1scannerPuzzle = new MoveToSceneObject("hallway01ScannerPuzzle", 204*xs, 44*ys, 48*xs, 80*ys, "scannerPuzzle", "rightCursor");
-      hallway01.addGameObject(h1scannerPuzzle);
-    }
+    Scene scannerPuzzle = new Scene("scannerPuzzle","fingerscannerBackground.png");
+    MoveToSceneObject h1scannerPuzzle = new MoveToSceneObject("hallway01ScannerPuzzle", 204*xs, 44*ys, 48*xs, 80*ys, "scannerPuzzle", "rightCursor");
+    hallway01.addGameObject(h1scannerPuzzle);
     //back to hallway01
     MoveToSceneObject scannerPuzzleToHallway01 = new MoveToSceneObject("scannerHallway01", 152*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
     scannerPuzzle.addGameObject(scannerPuzzleToHallway01);
@@ -216,28 +211,24 @@ public void setup()
   //controlRoomDocuments
     Scene documentPuzzle = new Scene("documentPuzzle","TEMP_documentPuzzle.png");
 
-    MoveToSceneObject cRTodocumentPuzzle = new MoveToSceneObject("controlRoomDocumentPuzzle", 240*xs, 150*ys, 16*xs, 16*xs, "TEMP_higher.png", "documentPuzzle", "rightCursor");
+    MoveToSceneObject cRTodocumentPuzzle = new MoveToSceneObject("controlRoomDocumentPuzzle", 240*xs, 150*ys, 16*xs, 16*xs, "higher.png", "documentPuzzle", "rightCursor");
     controlRoom.addGameObject(cRTodocumentPuzzle);
 
     //back to control room (BACK)
     MoveToSceneObject dPuzzleToControlRoom = new MoveToSceneObject("documentPuzzleControlroom", 152*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
     documentPuzzle.addGameObject(dPuzzleToControlRoom);
 
-    //TODO Code for document puzzle here
-
   //controlRoomComputer
     Scene computerScreen = new Scene("computerScreen","TEMP_computerScreen.png");
 
-    MoveToSceneObject cRToComputerScreen = new MoveToSceneObject("controlRoomComputerScreen", 135*xs, 50*ys, 16*xs, 16*xs, "TEMP_higher.png", "computerScreen", "interactableCursor");
+    MoveToSceneObject cRToComputerScreen = new MoveToSceneObject("controlRoomComputerScreen", 135*xs, 50*ys, 16*xs, 16*xs, "higher.png", "computerScreen", "interactableCursor");
     controlRoom.addGameObject(cRToComputerScreen);
 
     //back to control room
     MoveToSceneObject computerScreenToControlRoom = new MoveToSceneObject("computerScreenControlroom", 152*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
     computerScreen.addGameObject(computerScreenToControlRoom);
-    //TODO button to unlock exit 
 
     inventoryManager.setValues();
-
     // Apparently it's better to have the frameRate method last in setup
     frameRate(framerate);
 }

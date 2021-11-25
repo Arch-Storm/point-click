@@ -73,7 +73,7 @@ class LockerPuzzleArrow {
         this.oheight = oheight;
         this.isHigher = isHigher;
         this.index = index;
-        this.img = loadImage(isHigher ? "TEMP_higher.png" : "TEMP_lower.png");
+        this.img = loadImage(isHigher ? "higher.png" : "lower.png");
     }
 
     public void draw() {
