@@ -20,8 +20,8 @@ final DisplayText displayText = new DisplayText();
 public boolean textDisplayed = false;
 
 void settings() {
-  //fullScreen(P2D);
-  size(1920, 1080, P2D);
+  fullScreen(P2D);
+  //size(1920, 1080, P2D);
 
   smooth(8);
 }
