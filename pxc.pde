@@ -88,18 +88,18 @@ public void setup()
   barracksRoom.addGameObject(barrackstohallway01);
   
   //sticky note
-  Collectable postItNote = new Collectable("postItNote", "Postitcode.png");
-  CollectableObject postItNoteObject = new CollectableObject("postItNoteObject", 237*xs,45*xs,32*xs,32*xs, true, postItNote,"", "interactableCursor", "A code?", "I should be able to use this somewhere.");
-  barracksRoom.addGameObject(postItNoteObject);
+  Collectable note = new Collectable("note", "note.png");
+  CollectableObject noteObject = new CollectableObject("noteObject", 237*xs,45*xs,32*xs,32*xs, true, note,"", "interactableCursor", "A code?", "I should be able to use this somewhere.");
+  barracksRoom.addGameObject(noteObject);
 
   //arm
-  InteractableObject arm = new InteractableObject("arm", 85*xs, 135*ys, 48*xs, 48*xs, "Hand1.png", "knife", "mainCursor", "Why would I touch this?!", "I'm not going near this!");
+  InteractableObject arm = new InteractableObject("arm", 85*xs, 135*ys, 48*xs, 40*xs, "Hand1.png", "knife", "mainCursor", "Why would I touch this?!", "I'm not going near this!");
   barracksRoom.addGameObject(arm);
 
   //cut arm
   Collectable finger = new Collectable("finger", "Hand2.png", "finger.png");
   GameObject armNoFinger = new GameObject("armNoFinger", 85*xs, 135*ys, 48*xs, 40*xs, "Hand3.png", "mainCursor");
-  CollectableObject fingerObject = new CollectableObject("fingerObject", 85*xs, 135*ys, 48*xs, 40*xs, true, finger, armNoFinger, "", "interactableCursor", "I don't want to take this", "but i guess I'll have to...");
+  CollectableObject fingerObject = new CollectableObject("fingerObject", 85*xs, 135*ys, 48*xs, 40*xs, true, finger, armNoFinger, "grabFinger", "interactableCursor", "I don't want to take this", "but i guess I'll have to...");
   barracksRoom.addHiddenObject(fingerObject);
 
 //controlroom
@@ -127,7 +127,7 @@ public void setup()
   Scene hallway01 = new Scene("hallway01", "hallway01.png", "What have I gotten myself into...", "This is ridiculous.");
 
   //to hallway02
-  MoveToSceneObject h1ToHallway02 = new MoveToSceneObject("hallway01Hallway02", 152*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
+  MoveToSceneObject h1ToHallway02 = new MoveToSceneObject("hallway01Hallway02", 6*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
   hallway01.addGameObject(h1ToHallway02);
 
   //to barracksRoom
@@ -143,11 +143,11 @@ public void setup()
 
     //keypad puzzle
     String correctKeypadCode = "374";
-    KeypadPuzzleObject keypadPuzzleObject = new KeypadPuzzleObject("hallway03KeypadPuzzleObject", 103*xs, 10*ys, 120*xs, 168*ys, correctKeypadCode, "lock.png", "lockCorrect.png", "lockWrong.png", "mainCursor");
+    KeypadPuzzleObject keypadPuzzleObject = new KeypadPuzzleObject("keypadPuzzleObject", 103*xs, 10*ys, 120*xs, 168*ys, correctKeypadCode, "lock.png", "lockCorrect.png", "lockWrong.png", "mainCursor");
     keypadPuzzle.addGameObject(keypadPuzzleObject);
 
     //back to hallway01
-    MoveToSceneObject keypadPuzzleToH1 = new MoveToSceneObject("keypadPuzzleHallway01", 152*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
+    MoveToSceneObject keypadPuzzleToH1 = new MoveToSceneObject("keypadPuzzleHallway01", 6*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
     keypadPuzzle.addGameObject(keypadPuzzleToH1);
 
   //to Controlroom
@@ -170,16 +170,8 @@ public void setup()
   InteractableObject doorLock = new InteractableObject("doorLock", 200*xs, 30*ys, 48*xs, 80*xs, "", "storageKeyObject", "interactableCursor", "The door is locked...", "Maybe I can find a key somewhere.");
   hallway02.addGameObject(doorLock);
 
-
-//hallway03 (exit)
-  Scene hallway03 = new Scene("hallway03", "TEMP_ending.png", "what", "what");
-
-  //to hallway 02
-  MoveToSceneObject h3ToHallway02 = new MoveToSceneObject("hallway03Hallway02", 152*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
-  hallway03.addGameObject(h3ToHallway02);
-
 //Ending scene
-  Scene ending = new Scene("ending", "TEMP_ending.png");
+  Scene ending = new Scene("ending", "endscreen.png");
   
 /*----closeups-----*/
 
@@ -192,7 +184,7 @@ public void setup()
     lockerPuzzle.addGameObject(lockerPuzzleObject);
 
     //back to hallway02
-    MoveToSceneObject lockerpuzzletohallway02 = new MoveToSceneObject("lockerPuzzleHallway02", 152*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
+    MoveToSceneObject lockerpuzzletohallway02 = new MoveToSceneObject("lockerPuzzleHallway02", 6*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
     lockerPuzzle.addGameObject(lockerpuzzletohallway02);
 
     //only to change the cursor
@@ -234,7 +226,7 @@ public void setup()
     MoveToSceneObject h1scannerPuzzle = new MoveToSceneObject("hallway01ScannerPuzzle", 204*xs, 44*ys, 48*xs, 80*ys, "scannerPuzzle", "rightCursor");
     hallway01.addGameObject(h1scannerPuzzle);
     //back to hallway01
-    MoveToSceneObject scannerPuzzleToHallway01 = new MoveToSceneObject("scannerHallway01", 152*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
+    MoveToSceneObject scannerPuzzleToHallway01 = new MoveToSceneObject("scannerHallway01", 6*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
     scannerPuzzle.addGameObject(scannerPuzzleToHallway01);
 
     //fingerprint scanner puzzle
@@ -249,7 +241,7 @@ public void setup()
     computerScreen.addGameObject(cardScanner);
 
     //back to control room
-    MoveToSceneObject computerScreenToControlRoom = new MoveToSceneObject("computerScreenControlroom", 152*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
+    MoveToSceneObject computerScreenToControlRoom = new MoveToSceneObject("computerScreenControlroom", 6*xs, 160*ys, 16*xs, 16*xs, "downCursor-4x.png", true, "interactableCursor");
     computerScreen.addGameObject(computerScreenToControlRoom);
 
     //computer start and computer on

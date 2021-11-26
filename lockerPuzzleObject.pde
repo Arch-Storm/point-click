@@ -1,7 +1,6 @@
 class LockerPuzzleObject extends GameObject {
     private String correctLockerCode;
     private String currentCode = "000";
-    private PImage checkMark = loadImage("TEMP_check.png");
     private LockerPuzzleArrow[] lockerPuzzleArrows = new LockerPuzzleArrow[6];
 
     public LockerPuzzleObject(String identifier, int x, int y, int owidth, 
@@ -85,6 +84,8 @@ class LockerPuzzleArrow {
     public String mouseClicked(String currentCode, int pX, int pY, int pOwidth, int pOheight) {
         if (mouseX >= x && mouseX <= x + owidth &&
             mouseY >= y && mouseY <= y + oheight) {
+            audioManager.playOnce("changeNumber");
+            
             char[] chars = new char[3];
 
             currentCode.getChars(0, 3, chars, 0); // String to array of chars

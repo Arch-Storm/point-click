@@ -52,10 +52,12 @@ class KeypadPuzzleObject extends GameObject {
             Scene previousScene = sceneManager.scenes.get("hallway01");
             previousScene.removeByIndex(2);
             previousScene.addGameObject(previousScene.hiddenObjects.get(1));
+            audioManager.playOnce("accepted");
         } else {
             currentCode = "";
             changeImage(wrongImage);
             wrongCounter = 1.0f;
+            audioManager.playOnce("denied");
         }
     }
 

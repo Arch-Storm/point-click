@@ -13,12 +13,20 @@ class Scene {
   private String text2;
   private boolean textSeen;
 
+  private boolean shouldBlend = false;
+  private boolean isBlended = false;
+  private int blendingOpacity = -90;
+
+  private float textCounter = 5.0f;
+
+
   public Scene(String sceneName, String backgroundImageFile) {
     this(sceneName, backgroundImageFile, "", "");
   }
   
   public Scene(String sceneName, String backgroundImageFile, String text1, String text2) {
     this.sceneName = sceneName;
+    if (sceneName == "ending" || sceneName == "hallway02") shouldBlend = true;
     this.backgroundImage = loadImage(backgroundImageFile);
     gameObjects = new ArrayList<GameObject>();
     hiddenObjects = new ArrayList<GameObject>();
@@ -65,13 +73,45 @@ class Scene {
   }
   
   public void draw(int wwidth, int wheight) {
-    if (!textSeen && !textDisplayed) {
+    if (!textSeen && !textDisplayed && sceneName == "hallway02") {
+      if (textCounter > 0.0f) textCounter -= 1.0f/60.0f;
+      else {
+        displayText.displayText(text1, text2);
+        textSeen = true;
+      }
+    } else if (!textSeen && !textDisplayed) {
       displayText.displayText(text1, text2);
       textSeen = true;
     }
-    image(backgroundImage, 0, 0, wwidth, wheight);
-    for(GameObject object : gameObjects) {
-      object.draw();
+    if (shouldBlend) {
+      if (blendingOpacity < 255 && !isBlended) {
+        blendingOpacity += 2;
+        fill(0, blendingOpacity);
+        rect(0, 0, width, height);
+        fill(255, 255);
+      } else if (blendingOpacity >= 255 && !isBlended) {
+        isBlended = true;
+        blendingOpacity = 0;
+        fill(0, 255);
+        rect(0, 0, width, height);
+        fill(255, 255);
+      } else if (blendingOpacity < 255 && isBlended) {
+        blendingOpacity += 2;
+        fill(0, 255);
+        rect(0, 0, width, height);
+        fill(255, 255);
+        tint(255, blendingOpacity);
+        image(backgroundImage, 0, 0, wwidth, wheight);
+        tint(0, 255);
+      } else if (blendingOpacity >= 255 && isBlended) {
+        shouldBlend = false;
+      }
+    } else {
+      tint(255, 255);
+      image(backgroundImage, 0, 0, wwidth, wheight);
+      for(GameObject object : gameObjects) {
+        object.draw();
+      }
     }
   }
   

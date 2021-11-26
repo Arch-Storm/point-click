@@ -5,7 +5,8 @@ class AudioManager {
     private HashMap<String, SoundFile> sounds = new HashMap<String, SoundFile>();
     private PApplet sketch;
     private String[] soundNames = {"ambience", "cuttingFinger", "grabDocs", "grabKey", "grabKnife", "metalHits", "openDoor",
-                                   "openLocker", "screech", "singleHitEcho", "singleHitMetal", "countdown"};
+                                   "openLocker", "screech", "singleHitEcho", "singleHitMetal", "countdown",
+                                   "closeLocker", "denied", "changeNumber", "accepted", "grabFinger"};
 
     private String[] ambienceSounds = {"metalHits", "screech", "singleHitEcho", "singleHitMetal"};
     private float counter = 1.0f;

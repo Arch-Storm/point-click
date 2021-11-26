@@ -21,7 +21,7 @@ class ButtonObject extends GameObject {
         rect(this.x, this.y, 32*xs, (int)(textHeight*0.9), 1*xs);
         fill(255);
         textSize(8*xs);
-        text(text, this.x + 15, this.y, textWidth, textHeight); 
+        text(text, this.x + 2*xs, this.y + 1*ys, textWidth, textHeight); 
     }
 
     @Override

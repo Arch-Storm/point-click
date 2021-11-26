@@ -79,12 +79,13 @@ class InteractableObject extends GameObject {
         changeImage(replaceImage);
         displayText.displayText("Thank god...", "I actually got it open like this.");
         Scene previousScene = sceneManager.scenes.get("hallway01");
+        audioManager.playOnce("accepted");
         previousScene.removeByIndex(3);
         previousScene.addGameObject(previousScene.hiddenObjects.get(0));
       } else if (acceptedItem == "keyCard") {
         displayText.displayText("Is it actually starting up?!", "Yes! How is this still functional?!");
-        currentScene.addGameObject(currentScene.hiddenObjects.get(0));
-        currentScene.addGameObject(currentScene.hiddenObjects.get(1));
+        currentScene.gameObjects.add(1, currentScene.hiddenObjects.get(0));
+        currentScene.gameObjects.add(2, currentScene.hiddenObjects.get(1));
         currentScene.removeGameObject(this);
       }
     }
